@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nature Foody — Daily Beauty Combo Campaign Plan (4 Products)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root{
+  --green:#1e7e4a;--gl:#e6f4ec;--gm:#4caf7d;
+  --red:#d94f4f;--rl:#fdeaea;
+  --orange:#e07b39;--ol:#fef3ec;
+  --blue:#3a7bd5;--bl:#eaf0fb;
+  --purple:#7c5cbf;--pl:#f1edfb;
+  --yellow:#c8960a;--yl:#fff8e6;
+  --dark:#0f172a;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--bg:#f1f5f9;--white:#fff;
+  --shadow:0 2px 12px rgba(0,0,0,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;}
+
+.hdr{background:linear-gradient(135deg,#0f3722,#1e7e4a 50%,#f97316 100%);padding:28px 36px;color:#fff;}
+.hdr-top{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.logo{width:52px;height:52px;background:rgba(255,255,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.hdr h1{font-size:22px;font-weight:900;}
+.hdr p{opacity:.8;font-size:12px;margin-top:2px;}
+.hdr-stats{display:flex;gap:12px;flex-wrap:wrap;}
+.hs{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:8px 16px;border-radius:20px;font-size:11px;font-weight:700;}
+
+.tabs{background:var(--white);border-bottom:2px solid var(--border);display:flex;overflow-x:auto;padding:0 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.tab{padding:13px 16px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tab:hover{color:var(--green);}
+.tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:800;}
+
+.main{padding:22px 26px;max-width:1400px;margin:0 auto;}
+.sec{display:none;}.sec.active{display:block;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+.ga{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:18px;}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.card{background:var(--white);border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:0;}
+.ct{font-size:13px;font-weight:800;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+
+.kpi{background:var(--white);border-radius:14px;padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.kv{font-size:28px;font-weight:900;color:var(--dark);line-height:1;margin-top:6px;}
+.kl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;}
+.ks{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:6px;}
+.tg{background:var(--gl);color:var(--green);}
+.to{background:var(--ol);color:var(--orange);}
+.tb{background:var(--bl);color:var(--blue);}
+.tp{background:var(--pl);color:var(--purple);}
+.ty{background:var(--yl);color:var(--yellow);}
+.tr{background:var(--rl);color:var(--red);}
+
+.step{display:flex;gap:12px;padding:14px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--border);margin-bottom:10px;}
+.sn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;margin-top:1px;}
+.sb h5{font-size:13px;font-weight:800;margin-bottom:4px;}
+.sb p{font-size:11.5px;color:var(--muted);line-height:1.6;}
+
+.ccard{border-radius:14px;padding:18px;border:2px solid;margin-bottom:14px;}
+.badge{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block;}
+.sticker{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;display:inline-block;margin-top:6px;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl th{background:var(--dark);color:#fff;padding:9px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;}
+.tbl th:first-child{border-radius:8px 0 0 0;}.tbl th:last-child{border-radius:0 8px 0 0;}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:#fafbfc;}
+
+.prog{margin-bottom:12px;}
+.pt{display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:4px;}
+.pb{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.pf{height:100%;border-radius:4px;}
+
+.alert{border-radius:12px;padding:14px 16px;margin-bottom:10px;border-left:4px solid;display:flex;gap:12px;}
+.ai{font-size:18px;flex-shrink:0;}
+.alert h4{font-size:12px;font-weight:800;margin-bottom:3px;}
+.alert p{font-size:11.5px;color:var(--muted);line-height:1.6;}
+
+.prod-box{border-radius:14px;padding:16px;border:2px solid;text-align:center;}
+.prod-emoji{font-size:36px;margin-bottom:8px;}
+.prod-name{font-size:14px;font-weight:900;}
+.prod-price{font-size:22px;font-weight:900;margin-top:4px;}
+.prod-desc{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+.creative-frame{border-radius:14px;padding:16px;border:2px dashed var(--border);background:var(--bg);margin-bottom:14px;position:relative;}
+.cr-badge{position:absolute;top:-10px;left:16px;background:var(--dark);color:#fff;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;}
+.cr-type{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.cr-hook{font-size:15px;font-weight:900;color:var(--dark);margin-bottom:8px;font-style:italic;}
+.cr-body{font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.cr-tags{display:flex;flex-wrap:wrap;gap:6px;}
+
+.checklist{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.checklist li{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--border);}
+.checklist li .icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.checklist li .text h6{font-size:12px;font-weight:800;margin-bottom:2px;}
+.checklist li .text p{font-size:11px;color:var(--muted);line-height:1.5;}
+
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:14px;}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
+.tl-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.tl-line{width:2px;background:var(--border);flex:1;margin-top:4px;}
+.tl-content{padding-bottom:18px;flex:1;}
+.tl-day{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.tl-title{font-size:13px;font-weight:800;margin-bottom:4px;}
+.tl-desc{font-size:11.5px;color:var(--muted);line-height:1.6;}
+
+.footer{text-align:center;padding:20px;color:var(--muted);font-size:10px;border-top:1px solid var(--border);background:var(--white);margin-top:28px;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.sec-title{font-size:17px;font-weight:900;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-sub{font-size:11px;color:var(--muted);font-weight:400;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="logo">🌿</div>
+    <div>
+      <h1>✨ Daily Beauty Combo — 4-Product Campaign Plan</h1>
+      <p>Anytime Lotion + SPF 50 Sunscreen + Raspberry Lip Balm + Gentle Cream Cleanser &nbsp;·&nbsp; ₹999 Combo &nbsp;·&nbsp; ₹5,000/day Budget &nbsp;·&nbsp; Nature Foody</p>
+    </div>
+  </div>
+  <div class="hdr-stats">
+    <span class="hs">💰 ₹5,000/day Budget</span>
+    <span class="hs">🛍️ ₹999 Combo — 4 Products</span>
+    <span class="hs">🎯 Advantage+ Broad + Lookalike</span>
+    <span class="hs">📈 Target: 5×–7× ROAS</span>
+    <span class="hs">🤖 Daily Auto-Monitoring ON</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="show('brief',this)">📋 Campaign Brief</div>
+  <div class="tab" onclick="show('audience',this)">👥 Audiences</div>
+  <div class="tab" onclick="show('creatives',this)">🎨 Creative Ideas</div>
+  <div class="tab" onclick="show('upload',this)">📤 What to Upload</div>
+  <div class="tab" onclick="show('structure',this)">🏗️ Campaign Structure</div>
+  <div class="tab" onclick="show('scaling',this)">📈 Scaling Plan</div>
+  <div class="tab" onclick="show('monitor',this)">🤖 Daily Monitoring</div>
+</div>
+
+<div class="main">
+
+<!-- ===== BRIEF ===== -->
+<div id="tab-brief" class="sec active">
+  <div class="sec-title">📋 Campaign Brief <span class="sec-sub">— Summer Daily Duo</span></div>
+
+  <!-- Combo Product Box -->
+  <div class="card" style="margin-bottom:18px;background:linear-gradient(135deg,#e6f4ec,#fff8e6);">
+    <div class="ct">🛍️ The Combo — 4 Products for Complete Daily Beauty</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px;">
+      <div class="prod-box" style="border-color:var(--green);background:var(--gl);">
+        <div class="prod-emoji">🧴</div>
+        <div class="prod-name" style="color:var(--green);">Anytime Lotion</div>
+        <div class="prod-price" style="color:var(--green);">₹350</div>
+        <div class="prod-desc">Light & non-greasy · All skin types · Daily moisture · Anytime use</div>
+        <span class="badge tg" style="margin-top:8px;">Product 1 — Face & Body</span>
+      </div>
+      <div class="prod-box" style="border-color:var(--orange);background:var(--ol);">
+        <div class="prod-emoji">☀️</div>
+        <div class="prod-name" style="color:var(--orange);">SPF 50 PA++++ Sunscreen</div>
+        <div class="prod-price" style="color:var(--orange);">₹399</div>
+        <div class="prod-desc">Cream Gel formula · Broad spectrum · Chemical-free · Daily UV protection</div>
+        <span class="badge to" style="margin-top:8px;">Product 2 — Sun Protection</span>
+      </div>
+      <div class="prod-box" style="border-color:var(--purple);background:var(--pl);">
+        <div class="prod-emoji">💄</div>
+        <div class="prod-name" style="color:var(--purple);">Tinted Raspberry Lip Balm</div>
+        <div class="prod-price" style="color:var(--purple);">₹149</div>
+        <div class="prod-desc">Natural tint · SPF protection for lips · Moisturising · Everyday colour</div>
+        <span class="badge tp" style="margin-top:8px;">Product 3 — Lip Care</span>
+      </div>
+      <div class="prod-box" style="border-color:var(--blue);background:var(--bl);">
+        <div class="prod-emoji">🫧</div>
+        <div class="prod-name" style="color:var(--blue);">Gentle Cream Cleanser</div>
+        <div class="prod-price" style="color:var(--blue);">₹299</div>
+        <div class="prod-desc">Mild formula · All skin types · Removes sunscreen & impurities · No-strip clean</div>
+        <span class="badge tb" style="margin-top:8px;">Product 4 — Cleansing</span>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,var(--dark),#1e3a5f);border-radius:14px;padding:18px;color:#fff;text-align:center;">
+      <p style="font-size:11px;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.5px;">4-Product Combo Price</p>
+      <p style="font-size:40px;font-weight:900;color:#4caf7d;line-height:1.1;">₹999</p>
+      <p style="font-size:13px;margin-top:6px;opacity:.85;">🚚 FREE Delivery Included &nbsp;·&nbsp; Save ₹198+ vs buying separately &nbsp;·&nbsp; MRP: ₹1,197+</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
+        <span style="background:rgba(76,175,125,.25);border:1px solid #4caf7d;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;">🌿 Cleanse → Moisturise → Protect → Colour</span>
+        <span style="background:rgba(76,175,125,.25);border:1px solid #4caf7d;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;">⏱️ Complete routine in under 3 minutes</span>
+      </div>
+      <p style="font-size:11px;margin-top:8px;opacity:.7;">This price hits the FREE SHIPPING threshold automatically — your #1 conversion trigger proven by your account data</p>
+    </div>
+  </div>
+
+  <!-- Routine Flow -->
+  <div class="card" style="margin-bottom:18px;">
+    <div class="ct">🔄 Daily Routine Flow — The Campaign's Core Story</div>
+    <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
+      <div style="flex:1;min-width:130px;background:var(--bl);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:22px;">🫧</div>
+        <div style="font-weight:800;font-size:12px;color:var(--blue);margin-top:5px;">Step 1 — Morning</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Gentle Cream Cleanser · Fresh start</div>
+      </div>
+      <div style="font-size:18px;padding:0 8px;color:var(--muted);">→</div>
+      <div style="flex:1;min-width:130px;background:var(--gl);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:22px;">🧴</div>
+        <div style="font-weight:800;font-size:12px;color:var(--green);margin-top:5px;">Step 2 — Moisturise</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Anytime Lotion · Hydrate & nourish</div>
+      </div>
+      <div style="font-size:18px;padding:0 8px;color:var(--muted);">→</div>
+      <div style="flex:1;min-width:130px;background:var(--ol);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:22px;">☀️</div>
+        <div style="font-weight:800;font-size:12px;color:var(--orange);margin-top:5px;">Step 3 — Protect</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">SPF 50 Sunscreen · Block UV rays</div>
+      </div>
+      <div style="font-size:18px;padding:0 8px;color:var(--muted);">→</div>
+      <div style="flex:1;min-width:130px;background:var(--pl);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:22px;">💄</div>
+        <div style="font-weight:800;font-size:12px;color:var(--purple);margin-top:5px;">Step 4 — Finish</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Raspberry Lip Balm · Natural colour & care</div>
+      </div>
+    </div>
+    <div style="background:var(--gl);border-radius:10px;padding:11px 14px;margin-top:12px;">
+      <p style="font-size:12px;font-weight:800;color:var(--green);">💡 Campaign Headline: "Your Complete Daily Beauty Routine — 4 Natural Products, ₹999, Free Delivery."</p>
+      <p style="font-size:11px;color:var(--green);margin-top:3px;">This is a FULL routine sell — much stronger than a single product because it solves the whole problem, not just one step. Women who buy this don't need to shop for basics for 2–3 months.</p>
+    </div>
+  </div>
+
+  <!-- Campaign KPIs -->
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="kpi">
+      <div style="font-size:20px;">💰</div>
+      <div class="kv">₹5,000</div>
+      <div class="kl">Daily Ad Budget</div>
+      <span class="ks tg">₹1.5L / Month</span>
+    </div>
+    <div class="kpi">
+      <div style="font-size:20px;">🎯</div>
+      <div class="kv">5×–7×</div>
+      <div class="kl">Target ROAS</div>
+      <span class="ks to">₹25K–35K/day revenue</span>
+    </div>
+    <div class="kpi">
+      <div style="font-size:20px;">🛒</div>
+      <div class="kv">25–50</div>
+      <div class="kl">Purchases / Day (target)</div>
+      <span class="ks tb">At ₹999 AOV</span>
+    </div>
+    <div class="kpi">
+      <div style="font-size:20px;">📅</div>
+      <div class="kv">14 days</div>
+      <div class="kl">Time to Full Scale</div>
+      <span class="ks tp">Learning → Scale</span>
+    </div>
+  </div>
+
+  <!-- Why This Combo Works -->
+  <div class="g2">
+    <div class="card">
+      <div class="ct">✅ Why This Combo Will Work</div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="background:var(--gl);border-radius:10px;padding:12px;border-left:3px solid var(--green);">
+          <p style="font-weight:800;font-size:12px;color:var(--green);">☀️ Perfect Seasonal Timing</p>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Indian summer starts April. You're launching NOW — 2–3 weeks ahead of competitors. Sunscreen demand is about to spike massively across India.</p>
+        </div>
+        <div style="background:var(--ol);border-radius:10px;padding:12px;border-left:3px solid var(--orange);">
+          <p style="font-weight:800;font-size:12px;color:var(--orange);">🔗 Natural Daily Use Pairing</p>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Lotion + Sunscreen = morning routine essentials. People already buy both — bundling creates perceived value and simplifies the decision.</p>
+        </div>
+        <div style="background:var(--bl);border-radius:10px;padding:12px;border-left:3px solid var(--blue);">
+          <p style="font-weight:800;font-size:12px;color:var(--blue);">🚚 Auto Free Shipping Trigger</p>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">₹999 combo = free shipping automatically. Your data shows this is your #1 conversion driver. Zero friction at checkout.</p>
+        </div>
+        <div style="background:var(--pl);border-radius:10px;padding:12px;border-left:3px solid var(--purple);">
+          <p style="font-weight:800;font-size:12px;color:var(--purple);">🌿 Clean Beauty Positioning</p>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Chemical-free SPF + natural lotion combo is a rare offering in this price range. Most competitors use chemical sunscreens. This is your differentiator.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">📊 Revenue Projection (30 Days)</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <div class="pt"><span>Week 1 — Learning Phase</span><span style="color:var(--muted);">3×–4× ROAS</span></div>
+          <div class="pb"><div class="pf" style="width:45%;background:#94a3b8;"></div></div>
+          <p style="font-size:10.5px;color:var(--muted);margin-top:2px;">Budget: ₹35,000 · Revenue: ₹1.05L–1.4L</p>
+        </div>
+        <div>
+          <div class="pt"><span>Week 2 — Optimising</span><span style="color:var(--blue);">4×–5× ROAS</span></div>
+          <div class="pb"><div class="pf" style="width:60%;background:var(--blue);"></div></div>
+          <p style="font-size:10.5px;color:var(--muted);margin-top:2px;">Budget: ₹35,000 · Revenue: ₹1.4L–1.75L</p>
+        </div>
+        <div>
+          <div class="pt"><span>Week 3 — Scaling</span><span style="color:var(--green);">5×–6× ROAS</span></div>
+          <div class="pb"><div class="pf" style="width:78%;background:var(--green);"></div></div>
+          <p style="font-size:10.5px;color:var(--muted);margin-top:2px;">Budget: ₹35,000 · Revenue: ₹1.75L–2.1L</p>
+        </div>
+        <div>
+          <div class="pt"><span>Week 4 — Full Scale</span><span style="color:var(--orange);">6×–7× ROAS</span></div>
+          <div class="pb"><div class="pf" style="width:95%;background:linear-gradient(90deg,var(--green),var(--orange));"></div></div>
+          <p style="font-size:10.5px;color:var(--muted);margin-top:2px;">Budget: ₹35,000 · Revenue: ₹2.1L–2.45L</p>
+        </div>
+        <div style="background:var(--dark);border-radius:10px;padding:12px;color:#fff;margin-top:4px;">
+          <p style="font-size:11px;font-weight:700;">💰 30-Day Total Projection</p>
+          <p style="font-size:22px;font-weight:900;color:#4caf7d;margin-top:4px;">₹6.3L – ₹7.7L Revenue</p>
+          <p style="font-size:10.5px;opacity:.7;margin-top:3px;">From ₹1.5L spend · Net profit after ad spend: ₹4.8L–6.2L</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AUDIENCES ===== -->
+<div id="tab-audience" class="sec">
+  <div class="sec-title">👥 Audience Strategy <span class="sec-sub">— 3-Layer Targeting for Maximum Reach & Conversion</span></div>
+
+  <!-- Layer 1: Broad/Advantage+ -->
+  <div class="card" style="margin-bottom:16px;border-left:5px solid var(--green);">
+    <div class="ct">🌐 Layer 1 — Advantage+ Broad (Primary · 60% of Budget = ₹3,000/day)</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">Let Meta's AI find buyers across all segments. This is where your 6.91× ROAS "Offer Sales 4 hrs" campaign succeeded. Best for scaling quickly in 2026.</p>
+    <div class="g3">
+      <div style="background:var(--gl);border-radius:12px;padding:14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--green);">👩‍🎓 Young Women 18–28</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:5px;">College students & early working women. Heavy Instagram Reels & Stories users. Trend-driven. SPF awareness growing fast in this segment. Hook: "Your morning glow routine shouldn't cost ₹3,000."</p>
+        <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;">
+          <span class="badge tb">Instagram Reels</span>
+          <span class="badge tb">Stories</span>
+          <span class="badge tb">Threads</span>
+        </div>
+      </div>
+      <div style="background:var(--ol);border-radius:12px;padding:14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--orange);">👩‍💼 Working Women 25–40</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:5px;">Busy professionals who want simple, effective daily routine. Best purchasing power. Value "2 steps, done" messaging. Hook: "Protect your skin in 60 seconds every morning."</p>
+        <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;">
+          <span class="badge to">Facebook Feed</span>
+          <span class="badge to">Instagram Feed</span>
+          <span class="badge to">WhatsApp</span>
+        </div>
+      </div>
+      <div style="background:var(--pl);border-radius:12px;padding:14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--purple);">🏠 Homemakers 28–45</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:5px;">Trust natural/herbal products deeply. Research before buying. Facebook-heavy. Value "no chemicals" messaging. Hook: "I switched to this after reading every ingredient."</p>
+        <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;">
+          <span class="badge tp">Facebook Feed</span>
+          <span class="badge tp">Facebook Stories</span>
+          <span class="badge tp">WhatsApp Status</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--gl);border-radius:10px;padding:12px;margin-top:12px;">
+      <p style="font-size:12px;font-weight:800;color:var(--green);">📍 Primary Geographies (Tier 1 cities first, then expand):</p>
+      <p style="font-size:11.5px;color:var(--green);margin-top:4px;">Chennai · Bengaluru · Mumbai · Delhi NCR · Hyderabad · Coimbatore · Pune · Kochi &nbsp;→&nbsp; After Week 1, expand to all of India</p>
+    </div>
+  </div>
+
+  <!-- Layer 2: Lookalike -->
+  <div class="card" style="margin-bottom:16px;border-left:5px solid var(--blue);">
+    <div class="ct">🪞 Layer 2 — Lookalike Audiences (Warm · 25% of Budget = ₹1,250/day)</div>
+    <div class="g2">
+      <div style="background:var(--bl);border-radius:12px;padding:14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--blue);">🏆 1% Lookalike — Past Purchasers</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:5px;">Upload your existing customer list (Shopify orders) to Meta. Create 1% Lookalike for India. This is statistically your most likely next buyer. Expected ROAS: <strong>4–6×</strong></p>
+        <span class="badge tb" style="margin-top:8px;">Highest Priority</span>
+      </div>
+      <div style="background:var(--bl);border-radius:12px;padding:14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--blue);">🌐 1% Lookalike — Website Visitors (90d)</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:5px;">People who visited naturefoody.com. These showed interest but didn't buy. Lookalike of this group finds similar high-intent browsers. Expected ROAS: <strong>3–5×</strong></p>
+        <span class="badge tb" style="margin-top:8px;">High Priority</span>
+      </div>
+    </div>
+    <div style="background:var(--bl);border-radius:10px;padding:12px;margin-top:10px;">
+      <p style="font-size:12px;font-weight:800;color:var(--blue);">💡 Lookalike Interest Signals to Layer In:</p>
+      <p style="font-size:11.5px;color:var(--blue);margin-top:4px;">Organic skincare · Natural beauty · Ayurveda · Clean beauty India · Sun protection · Chemical-free cosmetics · Herbal products · Lakme · Minimalist India</p>
+    </div>
+  </div>
+
+  <!-- Layer 3: Retargeting -->
+  <div class="card" style="border-left:5px solid var(--purple);">
+    <div class="ct">🔁 Layer 3 — Retargeting (Hot · 15% of Budget = ₹750/day)</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">⚠️ Your previous retargeting failed (0.27× ROAS) because it was set up wrong. These 3 segments are built correctly — each with its own creative and urgency level.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="border-left:4px solid var(--red);background:var(--rl);border-radius:0 10px 10px 0;padding:12px 14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--red);">🛒 Segment A — Cart Abandoners (Last 3 Days) · Highest Priority</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">People who added the combo to cart but didn't buy. Creative: Dynamic ad showing their exact cart + "Your combo is waiting. Free delivery included. ⏰ Limited stock." Budget: ₹300/day</p>
+      </div>
+      <div style="border-left:4px solid var(--orange);background:var(--ol);border-radius:0 10px 10px 0;padding:12px 14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--orange);">👀 Segment B — Product Page Viewers (Last 7 Days) · Medium Priority</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Viewed the sunscreen or lotion page but didn't add to cart. Creative: Social proof ad "200+ women already using this combo this summer" + combo offer. Budget: ₹250/day</p>
+      </div>
+      <div style="border-left:4px solid var(--green);background:var(--gl);border-radius:0 10px 10px 0;padding:12px 14px;">
+        <p style="font-weight:800;font-size:12px;color:var(--green);">🏆 Segment C — Past Purchasers (Upsell) · LTV Growth</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Customers who bought before but not this combo. Creative: "You loved our [product]. Meet your new summer partner — the Daily Duo." Budget: ₹200/day</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CREATIVES ===== -->
+<div id="tab-creatives" class="sec">
+  <div class="sec-title">🎨 Creative Ideas <span class="sec-sub">— 6 Ad Concepts to Launch With (Reference Guide)</span></div>
+
+  <div style="background:var(--ol);border-radius:12px;padding:14px;margin-bottom:18px;border-left:4px solid var(--orange);">
+    <p style="font-weight:800;font-size:12px;color:var(--orange);">📌 Based on your existing creatives — these ideas build on what already worked in your account:</p>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:4px;">Your "Offer Sales 4hrs" hit 6.91× ROAS with urgency + offer framing. Your "Roshini Video" hit 2.71% CTR with a video problem hook. The Beetroot campaign worked with single-product focus. These 6 concepts combine all 3 winning formulas for the combo.</p>
+  </div>
+
+  <!-- Creative 1 -->
+  <div class="creative-frame">
+    <div class="cr-badge">Creative 1 — RECOMMENDED FIRST</div>
+    <div class="cr-type">📱 Instagram Reel / Video (9:16) · 30–45 seconds</div>
+    <div class="cr-hook">"This is my entire summer morning routine. 2 products. 60 seconds. ₹999."</div>
+    <div class="cr-body">
+      <strong>Scene 1 (0–3s HOOK):</strong> Close-up of sweaty, dull skin in morning sunlight. Text overlay: "Is Indian summer wrecking your skin?"<br><br>
+      <strong>Scene 2 (3–15s DEMO):</strong> Woman applies Anytime Lotion first — smooth, non-greasy. Then the SPF 50 sunscreen — lightweight, no white cast. Fast, satisfying routine.<br><br>
+      <strong>Scene 3 (15–25s RESULT):</strong> Cut to glowing, protected skin. Text: "Natural. Chemical-free. ₹999 for both."<br><br>
+      <strong>Scene 4 (25–30s CTA):</strong> "Free delivery included. Limited Summer Stock. Shop now →"<br><br>
+      <strong>Style:</strong> Real person, phone camera, natural light. NOT a studio shoot. Reference: your Roshini Video style (which hit 2.71% CTR).
+    </div>
+    <div class="cr-tags">
+      <span class="badge tg">UGC Style</span>
+      <span class="badge to">Summer Hook</span>
+      <span class="badge tb">Problem → Solution</span>
+      <span class="badge tp">9:16 Reel</span>
+    </div>
+  </div>
+
+  <!-- Creative 2 -->
+  <div class="creative-frame">
+    <div class="cr-badge">Creative 2 — FOR FEED (Best for Advantage+)</div>
+    <div class="cr-type">🖼️ Static Image (4:5) · Feed & Stories</div>
+    <div class="cr-hook">"Protect. Moisturise. Done. ₹999 — Free Delivery."</div>
+    <div class="cr-body">
+      <strong>Visual:</strong> Both products flat-laid on a clean white/beige surface with natural leaves/flowers. Bold text overlay at top: <em>"Your Complete Daily Skin Protection"</em>. Bottom: Price badge "₹999 COMBO — FREE DELIVERY 🚚"<br><br>
+      <strong>Body text in ad:</strong> "SPF 50 sunscreen + daily moisture lotion. Natural ingredients. Zero harmful chemicals. Made in Kanchipuram with love. ✅ Free delivery above ₹999."<br><br>
+      <strong>Reference:</strong> Use the same product photography style as your Beetroot campaign. Clean, minimal, ingredient-focused.
+    </div>
+    <div class="cr-tags">
+      <span class="badge tg">Static Image</span>
+      <span class="badge to">4:5 Feed</span>
+      <span class="badge tb">Offer Focused</span>
+      <span class="badge ty">High CTR Format</span>
+    </div>
+  </div>
+
+  <!-- Creative 3 -->
+  <div class="creative-frame">
+    <div class="cr-badge">Creative 3 — URGENCY / FLASH OFFER (Replicates 6.91× ROAS Formula)</div>
+    <div class="cr-type">📣 Static + Text Heavy (1:1 Square) · Feed</div>
+    <div class="cr-hook">"⏰ Summer Offer — ₹999 Combo ends [DATE]. Free Delivery. Grab yours."</div>
+    <div class="cr-body">
+      <strong>Visual:</strong> Bold yellow/orange background. Large text: "SUMMER SKIN COMBO ₹999". Small text below: "Anytime Lotion + SPF 50 Sunscreen". Timer/date element: "Offer valid till Sunday." Free delivery badge.<br><br>
+      <strong>Why this works:</strong> Your best-ever campaign ("Offer Sales 4 hrs" at 6.91× ROAS) used a time-limited offer. This creative replicates that psychological trigger in static image format for all placements.<br><br>
+      <strong>Rotate:</strong> Change the deadline date every 5–7 days to keep freshness. "Ends Sunday" → "Ends Tuesday" → "Ends Friday."
+    </div>
+    <div class="cr-tags">
+      <span class="badge tr">Urgency</span>
+      <span class="badge to">Flash Offer</span>
+      <span class="badge tg">Proven Formula</span>
+      <span class="badge tb">1:1 Square</span>
+    </div>
+  </div>
+
+  <!-- Creative 4 -->
+  <div class="creative-frame">
+    <div class="cr-badge">Creative 4 — BEFORE / AFTER (Trust Builder)</div>
+    <div class="cr-type">🔄 Carousel or Split Image · Feed</div>
+    <div class="cr-hook">"30 days of daily use. This is what natural SPF + moisture does to your skin."</div>
+    <div class="cr-body">
+      <strong>Card 1:</strong> Real customer's dull, tan skin — "Before: No sunscreen routine. Sun damage, uneven tone."<br>
+      <strong>Card 2:</strong> Same customer after 30 days — "After: SPF 50 + daily lotion. Even tone, protected, glowing."<br>
+      <strong>Card 3:</strong> Both products — "The combo that did this: ₹999. Free delivery today."<br><br>
+      <strong>CTA:</strong> "Try it for 30 days — if it doesn't work, we'll make it right." (Builds trust, reduces purchase anxiety.)<br><br>
+      <strong>Reference:</strong> Ask 2–3 existing customers who've used both products to share their skin photos. Nothing performs better in skincare than real results.
+    </div>
+    <div class="cr-tags">
+      <span class="badge tg">Before/After</span>
+      <span class="badge tb">Carousel</span>
+      <span class="badge tp">Trust Builder</span>
+      <span class="badge to">Social Proof</span>
+    </div>
+  </div>
+
+  <!-- Creative 5 -->
+  <div class="creative-frame">
+    <div class="cr-badge">Creative 5 — FOUNDER / ORIGIN STORY (Authenticity)</div>
+    <div class="cr-type">📱 Short Reel (9:16) · 20–30 seconds · Founder/Team Shoot</div>
+    <div class="cr-hook">"We made this sunscreen because we couldn't find a natural one that actually worked in Indian heat."</div>
+    <div class="cr-body">
+      <strong>Scene 1:</strong> Founder or team member in Kanchipuram workspace/kitchen. "We make everything by hand. No labs. No chemicals."<br><br>
+      <strong>Scene 2:</strong> Show ingredients — natural, farm-grown. "This SPF uses [natural ingredients]. Your skin absorbs everything you put on it."<br><br>
+      <strong>Scene 3:</strong> Combo shot. "This summer, we made a combo: our Daily Lotion + our SPF 50. ₹999 with free delivery. It's everything your skin needs."<br><br>
+      <strong>Why:</strong> Authenticity drives purchase trust for natural brands. Indian consumers are deeply skeptical of chemical products post-pandemic. Your "made in Kanchipuram" story is a superpower.
+    </div>
+    <div class="cr-tags">
+      <span class="badge tg">Founder Story</span>
+      <span class="badge to">Authenticity</span>
+      <span class="badge tb">9:16 Reel</span>
+      <span class="badge tp">High Trust</span>
+    </div>
+  </div>
+
+  <!-- Creative 6 -->
+  <div class="creative-frame">
+    <div class="cr-badge">Creative 6 — COMPARISON (vs Chemical Brands)</div>
+    <div class="cr-type">🖼️ Static Graphic (4:5) · Bold Text</div>
+    <div class="cr-hook">"Other sunscreens: 15 unpronounceable chemicals. Ours: ingredients you actually recognise."</div>
+    <div class="cr-body">
+      <strong>Visual:</strong> Two-column split. Left: Generic chemical sunscreen ingredient list (long, scary). Right: Nature Foody SPF — short, clean, natural ingredients. Bold headline: "You deserve to know what goes on your skin."<br><br>
+      <strong>Body copy:</strong> "Our SPF 50 PA++++ sunscreen is made from natural ingredients, handcrafted in Kanchipuram. No parabens. No sulphates. No white cast. Pair it with our Anytime Lotion for complete daily protection — ₹999."<br><br>
+      <strong>This works because:</strong> Indian clean beauty awareness is surging in 2026. Comparison content stops the scroll and builds instant credibility.
+    </div>
+    <div class="cr-tags">
+      <span class="badge tr">Comparison</span>
+      <span class="badge tg">Clean Beauty</span>
+      <span class="badge to">Stops Scroll</span>
+      <span class="badge tb">4:5 Feed</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== WHAT TO UPLOAD ===== -->
+<div id="tab-upload" class="sec">
+  <div class="sec-title">📤 What You Need to Upload <span class="sec-sub">— Complete Checklist Before Launch</span></div>
+
+  <div class="g2">
+    <!-- Assets -->
+    <div class="card">
+      <div class="ct">📸 Visual Assets to Prepare</div>
+      <ul class="checklist">
+        <li>
+          <div class="icon">📦</div>
+          <div class="text">
+            <h6>Product Photos — Both Items Together</h6>
+            <p>Flat lay of Anytime Lotion + SPF 50 sunscreen on clean background. Minimum 3 angles. Natural lighting preferred. Use for static image ads (Creatives 2, 3).</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">🎥</div>
+          <div class="text">
+            <h6>UGC Video — 30–45 Second Morning Routine</h6>
+            <p>Real person (you, team member, or customer) applying both products. Phone camera, natural light. No script needed — just show the routine authentically. For Creative 1.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">🤳</div>
+          <div class="text">
+            <h6>Founder/Origin Story Video — 20–30 Seconds</h6>
+            <p>Short clip in your workspace or kitchen talking about why you made this combo. Kanchipuram backdrop ideal. For Creative 5. This is your most powerful trust asset.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">🔄</div>
+          <div class="text">
+            <h6>Before & After Customer Photos (2–3 customers)</h6>
+            <p>Ask 2–3 existing customers who've used lotion + sunscreen to share their skin photos (before starting routine vs after 3–4 weeks). For Creative 4 carousel.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">🖼️</div>
+          <div class="text">
+            <h6>Graphic Design Files — Offer Statics</h6>
+            <p>Bold offer graphic: "₹999 Summer Combo — Free Delivery" in 3 sizes: 1080×1080 (square), 1080×1350 (4:5 feed), 1080×1920 (stories/reels). For Creatives 2 & 3.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tech setup -->
+    <div class="card">
+      <div class="ct">⚙️ Technical Setup Checklist</div>
+      <ul class="checklist">
+        <li>
+          <div class="icon">🛍️</div>
+          <div class="text">
+            <h6>Create the Combo Product Page on Shopify</h6>
+            <p>Build a dedicated combo product page (not individual product pages). Title: "Summer Daily Duo — Anytime Lotion + SPF 50 Sunscreen" at ₹999. Add "FREE DELIVERY INCLUDED" prominently. This is where all ads will send traffic.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">🔌</div>
+          <div class="text">
+            <h6>Meta Pixel + Conversions API — Verify Both Active</h6>
+            <p>Confirm your Pixel is firing on the new combo product page. Verify CAPI is active (Shopify Admin → Meta App → Conversions API). Without this, Meta can't optimise properly.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">📦</div>
+          <div class="text">
+            <h6>Add Combo to Product Catalog in Meta Business Manager</h6>
+            <p>For dynamic retargeting ads to show the exact combo. Go to Commerce Manager → Catalog → Add product → ensure the ₹999 combo is listed with correct image, title, and URL.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">📋</div>
+          <div class="text">
+            <h6>Upload Customer List for Lookalike Audience</h6>
+            <p>Export your Shopify customer list (name + email/phone) → Upload to Meta Business Manager → Audiences → Create Custom Audience from Customer List → Then create 1% Lookalike.</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon">✅</div>
+          <div class="text">
+            <h6>Set Up UTM Parameters for All Ad Links</h6>
+            <p>Add UTM tags to your combo page URL so you can track which specific ad is driving purchases: utm_source=facebook&utm_medium=paid&utm_campaign=summer_daily_duo&utm_content=[ad_name]</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Ad Copy Templates -->
+  <div class="card">
+    <div class="ct">✍️ Ad Copy Templates — Ready to Use</div>
+    <div class="g2">
+      <div>
+        <p style="font-weight:800;font-size:12px;margin-bottom:8px;">📝 Primary Text (Main Ad Copy)</p>
+        <div style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);font-size:12px;line-height:1.7;">
+          ✨ Your complete daily beauty routine. 4 natural products. ₹999.<br><br>
+          We made the <strong>Daily Beauty Combo</strong> — everything your skin and lips need, every single day:<br><br>
+          🫧 <strong>Gentle Cream Cleanser</strong> — mild, no-strip clean to start fresh<br>
+          🧴 <strong>Anytime Lotion</strong> — light, non-greasy all-day moisture<br>
+          ☀️ <strong>SPF 50 PA++++ Sunscreen</strong> — chemical-free broad spectrum protection<br>
+          💄 <strong>Raspberry Lip Balm</strong> — natural tint + moisture for your lips<br><br>
+          All handcrafted in Kanchipuram from farm-grown natural ingredients. No parabens. No sulphates. No harmful chemicals.<br><br>
+          ✅ ₹999 for all 4 products<br>
+          🚚 Free delivery included<br>
+          ⏰ Limited combo stock<br><br>
+          Shop now 👇
+        </div>
+      </div>
+      <div>
+        <p style="font-weight:800;font-size:12px;margin-bottom:8px;">💬 Short Copy (for Stories & Reels overlay)</p>
+        <div style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);font-size:12px;line-height:1.7;margin-bottom:10px;">
+          4 products. 1 combo. Your entire daily beauty routine done. ✨<br>
+          Cleanser · Lotion · SPF 50 · Raspberry Lip Balm<br>
+          All natural. All handmade. ₹999. Free delivery. 🌿<br>
+          Limited stock →
+        </div>
+        <p style="font-weight:800;font-size:12px;margin-bottom:8px;">🏷️ Headline Options (Test all 3)</p>
+        <div style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);font-size:12px;line-height:1.9;">
+          1. "Your Complete Daily Beauty Kit — 4 Products, ₹999"<br>
+          2. "Cleanse. Moisturise. Protect. Colour. All Natural. ₹999."<br>
+          3. "4 Natural Products for Your Daily Routine — Free Delivery"
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STRUCTURE ===== -->
+<div id="tab-structure" class="sec">
+  <div class="sec-title">🏗️ Campaign Structure <span class="sec-sub">— How to Set It Up in Meta Ads Manager</span></div>
+
+  <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#0f3722,#1e7e4a);color:#fff;">
+    <div style="font-size:14px;font-weight:900;margin-bottom:6px;">Campaign: "NF | Summer Daily Duo | ASC | [Date]"</div>
+    <div style="opacity:.85;font-size:12px;">Type: Advantage+ Shopping Campaign (ASC) · Objective: Sales · Budget: ₹5,000/day · Attribution: 7-day click, 1-day view</div>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Ad Set</th>
+        <th>Audience Type</th>
+        <th>Daily Budget</th>
+        <th>Placements</th>
+        <th>Optimization</th>
+        <th>Creatives to Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:800;">Ad Set 1<br><span style="font-weight:400;font-size:11px;">Advantage+ Broad</span></td>
+        <td>Broad — Meta AI finds buyers (18–45 women, India)</td>
+        <td style="font-weight:800;color:var(--green);">₹3,000/day</td>
+        <td>Advantage+ Placements (All: Feed, Stories, Reels, WhatsApp)</td>
+        <td>Purchase (Conversions)</td>
+        <td>Creative 1 + 2 + 3 (3 variants)</td>
+      </tr>
+      <tr>
+        <td style="font-weight:800;">Ad Set 2<br><span style="font-weight:400;font-size:11px;">Lookalike 1%</span></td>
+        <td>1% Lookalike of past purchasers · India</td>
+        <td style="font-weight:800;color:var(--blue);">₹1,000/day</td>
+        <td>Advantage+ Placements</td>
+        <td>Purchase (Conversions)</td>
+        <td>Creative 4 + 5 (social proof & founder)</td>
+      </tr>
+      <tr>
+        <td style="font-weight:800;">Ad Set 3<br><span style="font-weight:400;font-size:11px;">Retargeting</span></td>
+        <td>Cart abandoners + page viewers (7 days)</td>
+        <td style="font-weight:800;color:var(--purple);">₹750/day</td>
+        <td>Feed + Stories only</td>
+        <td>Purchase (Conversions)</td>
+        <td>Creative 3 (urgency) + Dynamic Product Ad</td>
+      </tr>
+      <tr>
+        <td style="font-weight:800;">Ad Set 4<br><span style="font-weight:400;font-size:11px;">Creative Test</span></td>
+        <td>Broad (separate from Ad Set 1 to test creatives)</td>
+        <td style="font-weight:800;color:var(--orange);">₹250/day</td>
+        <td>Feed + Reels</td>
+        <td>Purchase</td>
+        <td>Creative 6 (comparison) — test only</td>
+      </tr>
+      <tr style="background:var(--gl);">
+        <td style="font-weight:900;">TOTAL</td>
+        <td>—</td>
+        <td style="font-weight:900;color:var(--green);">₹5,000/day</td>
+        <td colspan="3" style="color:var(--green);font-weight:700;">All placements covered · 6 creatives running · Proper separation of audiences</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="g2" style="margin-top:16px;">
+    <div class="card">
+      <div class="ct">⚙️ Campaign Settings — Exact Configuration</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Campaign Type</span><span>Advantage+ Shopping Campaign (ASC)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Objective</span><span>Sales → Website Purchases</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Daily Budget</span><span style="color:var(--green);font-weight:700;">₹5,000/day (Campaign Level)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Attribution Window</span><span>7-day click, 1-day view</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Bid Strategy</span><span>Highest Volume (no manual bid cap)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Pixel</span><span>Nature Foody Shopify Pixel + CAPI</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">Destination URL</span><span>Combo product page on Shopify + UTM</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-weight:700;">WhatsApp Status</span><span style="color:var(--green);font-weight:700;">✅ ON — activate in Advantage+</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">📏 Do's and Don'ts During Learning Phase (Days 1–7)</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="background:var(--gl);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--green);font-weight:900;font-size:14px;">✅</span>
+          <p style="font-size:11.5px;">Let the campaign run for at least 7 days before judging performance</p>
+        </div>
+        <div style="background:var(--gl);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--green);font-weight:900;font-size:14px;">✅</span>
+          <p style="font-size:11.5px;">Review metrics only after 50+ purchases have occurred</p>
+        </div>
+        <div style="background:var(--gl);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--green);font-weight:900;font-size:14px;">✅</span>
+          <p style="font-size:11.5px;">Monitor daily reports (automated — see Daily Monitoring tab)</p>
+        </div>
+        <div style="background:var(--rl);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--red);font-weight:900;font-size:14px;">❌</span>
+          <p style="font-size:11.5px;">Do NOT change budget, audience, or creatives in first 7 days — resets learning phase</p>
+        </div>
+        <div style="background:var(--rl);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--red);font-weight:900;font-size:14px;">❌</span>
+          <p style="font-size:11.5px;">Do NOT increase budget by more than 20% at one time after learning phase</p>
+        </div>
+        <div style="background:var(--rl);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--red);font-weight:900;font-size:14px;">❌</span>
+          <p style="font-size:11.5px;">Do NOT pause and restart — this resets the learning phase completely</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCALING ===== -->
+<div id="tab-scaling" class="sec">
+  <div class="sec-title">📈 Daily Scaling Plan <span class="sec-sub">— Week by Week from ₹5K to ₹15K+ per day</span></div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot" style="background:var(--blue);"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-day">Days 1–3</div>
+        <div class="tl-title">🔵 Learning Phase — Do Not Touch</div>
+        <div class="tl-desc">Meta's AI is learning which users convert. Expected ROAS: 1.5×–3× (normal during learning). Do not change anything. Monitor daily report. KPI to watch: Add-to-cart rate should be above 3%. If it's below 1%, the creative may need review after Day 5.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot" style="background:var(--blue);"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-day">Days 4–7</div>
+        <div class="tl-title">🔵 Early Optimisation — Observe</div>
+        <div class="tl-desc">ROAS should climb to 2.5×–4×. Review which creative is getting the most purchases and lowest cost/purchase. Pause any creative with 0 purchases and 500+ impressions. Do NOT change budgets yet. Add 1 new creative variant if one is clearly winning (test its close sibling).</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot" style="background:var(--green);"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-day">Day 8–10</div>
+        <div class="tl-title">🟢 First Scale — If ROAS ≥ 3.5×</div>
+        <div class="tl-desc">If blended ROAS is at or above 3.5× after Day 7, increase budget by 20%: ₹5,000 → ₹6,000/day. Scale only the Advantage+ Broad ad set (Ad Set 1). Keep retargeting and lookalike at same budget. Monitor for 3 days before scaling again. Expected ROAS at this point: 4×–5×.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot" style="background:var(--green);"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-day">Days 11–14</div>
+        <div class="tl-title">🟢 Second Scale — If ROAS ≥ 4×</div>
+        <div class="tl-desc">Scale again by 20%: ₹6,000 → ₹7,200/day. Now also test: (a) Duplicate the winning ad set with a different audience angle (e.g., 2% lookalike), (b) Add Creative 6 (comparison ad) as a fresh test. Frequency should still be below 2.5× at this point — if it's above 3×, add 2 new creatives urgently.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot" style="background:var(--orange);"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-day">Days 15–21</div>
+        <div class="tl-title">🟠 Aggressive Scale — ₹8K–10K/day</div>
+        <div class="tl-desc">If ROAS is stable at 4.5×+, scale every 3 days: ₹7,200 → ₹8,600 → ₹10,000/day. At this stage: (a) Launch a "sister campaign" — same combo but with a different angle (e.g., monsoon-prep, gifting), (b) Activate Threads placements, (c) Test a lower combo price (₹899 in a separate campaign) to see if volume increases offset margin reduction.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot" style="background:var(--orange);"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-day">Days 22–30</div>
+        <div class="tl-title">🟠 Full Scale — ₹12K–15K/day Target</div>
+        <div class="tl-desc">If all KPIs are healthy (ROAS 5×+, frequency below 3×, cost/purchase below ₹200), push to ₹12,000–15,000/day. At this scale: (a) Creative refresh every 10 days becomes mandatory, (b) Add a new combo variant (e.g., add Hair Serum to make a "Summer Complete Kit" at ₹1,499), (c) Prep for flash sale event to create a week of 6×–7× ROAS spike.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="ct">🔑 Scaling Decision Rules — Simple Traffic Lights</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>Metric</th><th style="background:#15803d;">🟢 Scale Up</th><th style="background:#d97706;">🟡 Hold & Optimise</th><th style="background:#b91c1c;">🔴 Scale Down / Pause</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:700;">ROAS</td><td>≥ 4×</td><td>2.5× – 3.9×</td><td>Below 2×</td></tr>
+        <tr><td style="font-weight:700;">Cost/Purchase</td><td>Below ₹200</td><td>₹200 – ₹350</td><td>Above ₹400</td></tr>
+        <tr><td style="font-weight:700;">Frequency</td><td>Below 2.5×</td><td>2.5× – 4×</td><td>Above 4× (add new creatives)</td></tr>
+        <tr><td style="font-weight:700;">CTR</td><td>Above 1.5%</td><td>0.8% – 1.5%</td><td>Below 0.8% (creative issue)</td></tr>
+        <tr><td style="font-weight:700;">Add-to-Cart Rate</td><td>Above 4%</td><td>2% – 4%</td><td>Below 2% (landing page issue)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MONITORING ===== -->
+<div id="tab-monitor" class="sec">
+  <div class="sec-title">🤖 Daily Auto-Monitoring <span class="sec-sub">— Campaign is Tracked Every Day via Windsor AI</span></div>
+
+  <div style="background:linear-gradient(135deg,#0f3722,#1e7e4a);border-radius:16px;padding:22px;margin-bottom:18px;color:#fff;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">🤖</div>
+      <div>
+        <p style="font-size:15px;font-weight:900;">Daily Monitoring is Active</p>
+        <p style="opacity:.75;font-size:11px;margin-top:2px;">I'll pull your Windsor AI data every day and flag issues, wins, and scaling triggers automatically</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:4px;">
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.2);">
+        <p style="font-size:11px;font-weight:700;">🕐 Monitoring Time</p>
+        <p style="font-size:13px;font-weight:900;margin-top:3px;">Every Morning</p>
+        <p style="font-size:10px;opacity:.7;margin-top:2px;">Previous day's full data</p>
+      </div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.2);">
+        <p style="font-size:11px;font-weight:700;">📊 Data Source</p>
+        <p style="font-size:13px;font-weight:900;margin-top:3px;">Windsor AI</p>
+        <p style="font-size:10px;opacity:.7;margin-top:2px;">Facebook Ads connector</p>
+      </div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.2);">
+        <p style="font-size:11px;font-weight:700;">🚨 Alert Triggers</p>
+        <p style="font-size:13px;font-weight:900;margin-top:3px;">Auto Detected</p>
+        <p style="font-size:10px;opacity:.7;margin-top:2px;">ROAS drops, fatigue, waste</p>
+      </div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.2);">
+        <p style="font-size:11px;font-weight:700;">📈 Scale Triggers</p>
+        <p style="font-size:13px;font-weight:900;margin-top:3px;">Auto Flagged</p>
+        <p style="font-size:10px;opacity:.7;margin-top:2px;">When ROAS hits targets</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">📋 What Each Daily Report Will Include</div>
+      <ul class="checklist">
+        <li><div class="icon">💰</div><div class="text"><h6>Yesterday's Spend vs Revenue vs ROAS</h6><p>Compared to campaign average and target ROAS (5×–7×)</p></div></li>
+        <li><div class="icon">🏆</div><div class="text"><h6>Best Performing Creative of the Day</h6><p>Which ad had the best CTR, lowest cost/purchase, and highest ROAS</p></div></li>
+        <li><div class="icon">🚨</div><div class="text"><h6>Alerts — Fatigue, Drops, Waste</h6><p>Auto-detected: frequency spikes, ROAS drops, underperforming ad sets</p></div></li>
+        <li><div class="icon">📈</div><div class="text"><h6>Scale Recommendation</h6><p>Clear YES/NO on whether to increase budget today, with specific amount</p></div></li>
+        <li><div class="icon">🔄</div><div class="text"><h6>Creative Rotation Alert</h6><p>Flag when any creative hits 10+ days or frequency above 3× — time to refresh</p></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ct">📅 Campaign Milestone Targets</div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+          <div><p style="font-weight:800;font-size:12px;">Day 7</p><p style="font-size:11px;color:var(--muted);">Exit learning phase</p></div>
+          <span class="badge tb">ROAS ≥ 3.5×</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+          <div><p style="font-weight:800;font-size:12px;">Day 10</p><p style="font-size:11px;color:var(--muted);">First budget scale</p></div>
+          <span class="badge tg">₹6,000/day</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+          <div><p style="font-weight:800;font-size:12px;">Day 14</p><p style="font-size:11px;color:var(--muted);">Creative refresh</p></div>
+          <span class="badge to">New UGC added</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+          <div><p style="font-weight:800;font-size:12px;">Day 21</p><p style="font-size:11px;color:var(--muted);">Aggressive scale</p></div>
+          <span class="badge tg">₹10,000/day</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+          <div><p style="font-weight:800;font-size:12px;">Day 30</p><p style="font-size:11px;color:var(--muted);">Full summer scale</p></div>
+          <span class="badge to">₹15,000/day</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:linear-gradient(135deg,var(--gl),#d4f7e7);border-radius:10px;border:1px solid var(--gm);">
+          <div><p style="font-weight:900;font-size:12px;color:var(--green);">Month 1 Total</p><p style="font-size:11px;color:var(--green);">Revenue projection</p></div>
+          <span class="badge tg" style="font-size:12px;padding:5px 12px;">₹6.3L–₹7.7L</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  🌿 Nature Foody — Daily Beauty Combo Campaign Plan &nbsp;·&nbsp; Anytime Lotion + SPF 50 + Raspberry Lip Balm + Gentle Cleanser &nbsp;·&nbsp; ₹999 · 4 Products &nbsp;·&nbsp; Budget: ₹5,000/day &nbsp;·&nbsp; Created March 26, 2026
+</div>
+
+<script>
+function show(name,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

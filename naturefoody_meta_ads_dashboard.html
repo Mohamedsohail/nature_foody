@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nature Foody — Meta Ads Intelligence Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --green: #2d7a4f;
+    --green-light: #e6f4ec;
+    --green-mid: #4caf7d;
+    --orange: #e07b39;
+    --orange-light: #fef3ec;
+    --red: #d94f4f;
+    --red-light: #fdeaea;
+    --blue: #3a7bd5;
+    --blue-light: #eaf0fb;
+    --purple: #7c5cbf;
+    --purple-light: #f1edfb;
+    --yellow: #f0a500;
+    --yellow-light: #fff8e6;
+    --dark: #1a1a2e;
+    --text: #2c2c3e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --bg: #f6f8fa;
+    --white: #ffffff;
+    --card-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1b4332 0%, #2d7a4f 60%, #4caf7d 100%);
+    padding: 28px 36px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-badge {
+    width: 52px; height: 52px; background: rgba(255,255,255,0.15);
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+  }
+  .header-title { color: white; }
+  .header-title h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+  .header-title p { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+  .header-right { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,0.18); color: white;
+    padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--white); border-bottom: 2px solid var(--border);
+    display: flex; overflow-x: auto; padding: 0 24px; gap: 0;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .nav-tab {
+    padding: 14px 20px; cursor: pointer; font-size: 13px; font-weight: 500;
+    color: var(--muted); white-space: nowrap; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .nav-tab:hover { color: var(--green); }
+  .nav-tab.active { color: var(--green); border-bottom-color: var(--green); font-weight: 700; }
+
+  /* MAIN */
+  .main { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .kpi-card {
+    background: var(--white); border-radius: 16px; padding: 20px;
+    box-shadow: var(--card-shadow); border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .kpi-icon { font-size: 22px; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: var(--dark); line-height: 1; }
+  .kpi-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+  }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-orange { background: var(--orange-light); color: var(--orange); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-blue { background: var(--blue-light); color: var(--blue); }
+  .tag-yellow { background: var(--yellow-light); color: var(--yellow); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-sub { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 4px; }
+
+  /* GRID LAYOUTS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 20px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; margin-bottom: 20px; }
+  @media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+  /* CARDS */
+  .card {
+    background: var(--white); border-radius: 16px; padding: 22px;
+    box-shadow: var(--card-shadow); border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 14px; font-weight: 700; color: var(--dark);
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ALERT CARDS */
+  .alert-card {
+    border-radius: 14px; padding: 16px 18px; margin-bottom: 12px;
+    border-left: 4px solid; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .alert-card.urgent { background: var(--red-light); border-color: var(--red); }
+  .alert-card.warning { background: var(--yellow-light); border-color: var(--yellow); }
+  .alert-card.info { background: var(--blue-light); border-color: var(--blue); }
+  .alert-card.success { background: var(--green-light); border-color: var(--green); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .alert-content h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .alert-content p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ACTION ITEMS */
+  .action-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .action-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px; border-radius: 12px; background: var(--bg);
+    border: 1px solid var(--border);
+  }
+  .action-num {
+    width: 24px; height: 24px; border-radius: 50%; background: var(--green);
+    color: white; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .action-text h5 { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .action-text p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* CONCERN TAGS */
+  .concern-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .concern-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 16px; border-radius: 12px; font-size: 12px; font-weight: 600;
+    border: 1.5px solid; cursor: default;
+  }
+  .concern-chip .icon { font-size: 16px; }
+
+  /* BUDGET TABLE */
+  .budget-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .budget-table th {
+    background: var(--green); color: white; padding: 10px 14px;
+    text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  }
+  .budget-table th:first-child { border-radius: 8px 0 0 0; }
+  .budget-table th:last-child { border-radius: 0 8px 0 0; }
+  .budget-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .budget-table tr:last-child td { border-bottom: none; font-weight: 700; background: var(--green-light); }
+  .budget-table tr:hover:not(:last-child) td { background: var(--bg); }
+
+  /* PROGRESS BARS */
+  .prog-item { margin-bottom: 14px; }
+  .prog-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+  .prog-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+  /* CREATIVE CARDS */
+  .creative-card {
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 16px; display: flex; gap: 12px;
+  }
+  .creative-rank {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .creative-body h5 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .creative-body p { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+  .creative-perf { font-size: 10px; font-weight: 700; margin-top: 6px; display: inline-block; padding: 2px 8px; border-radius: 10px; }
+
+  /* ROAS METER */
+  .roas-meter { display: flex; gap: 6px; margin-top: 12px; }
+  .roas-seg {
+    flex: 1; height: 10px; border-radius: 4px;
+    position: relative;
+  }
+  .roas-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+  /* AUDIENCE CARD */
+  .audience-card {
+    border-radius: 12px; padding: 14px 16px; border: 1.5px solid var(--border);
+    margin-bottom: 10px; background: var(--bg);
+  }
+  .audience-card h5 { font-size: 13px; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+  .audience-card p { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; padding: 24px; color: var(--muted); font-size: 11px;
+    border-top: 1px solid var(--border); margin-top: 32px; background: var(--white);
+  }
+
+  /* TOOLTIP on hover */
+  .tip { position: relative; cursor: help; }
+  .tip:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+    background: var(--dark); color: white; padding: 5px 10px; border-radius: 6px;
+    font-size: 11px; white-space: nowrap; pointer-events: none; z-index: 99;
+  }
+
+  /* pulse dot */
+  .live-dot {
+    display: inline-block; width: 7px; height: 7px;
+    background: #4caf7d; border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:0.4;transform:scale(1.4);}
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-badge">🌿</div>
+    <div class="header-title">
+      <h1>Nature Foody — Meta Ads Dashboard</h1>
+      <p><span class="live-dot"></span> &nbsp;Performance Intelligence Report &nbsp;·&nbsp; March 26, 2026 &nbsp;·&nbsp; Facebook &amp; Instagram</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge">📍 Kanchipuram, India</span>
+    <span class="badge">🛍️ Skincare &amp; Haircare</span>
+    <span class="badge">🔗 Shopify</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('overview')">📊 Overview</div>
+  <div class="nav-tab" onclick="showTab('alerts')">🚨 Alerts</div>
+  <div class="nav-tab" onclick="showTab('strategy')">🎯 Strategy</div>
+  <div class="nav-tab" onclick="showTab('creative')">🎨 Creatives</div>
+  <div class="nav-tab" onclick="showTab('audience')">👥 Audiences</div>
+  <div class="nav-tab" onclick="showTab('budget')">💰 Budget</div>
+  <div class="nav-tab" onclick="showTab('actions')">✅ Today's Actions</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ============ OVERVIEW ============ -->
+  <div id="tab-overview" class="section active">
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-icon">📦</div>
+        <div class="kpi-value">30+</div>
+        <div class="kpi-label">Products to Promote</div>
+        <span class="kpi-tag tag-green">5 Categories</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">💸</div>
+        <div class="kpi-value">₹999</div>
+        <div class="kpi-label">Free Shipping Threshold</div>
+        <span class="kpi-tag tag-blue">Use in Every Ad</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🎁</div>
+        <div class="kpi-value">₹1,200</div>
+        <div class="kpi-label">Free Gift Threshold</div>
+        <span class="kpi-tag tag-orange">AOV Booster</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">📈</div>
+        <div class="kpi-value">2.5×–6×</div>
+        <div class="kpi-label">Target ROAS Range</div>
+        <span class="kpi-tag tag-green">Skincare Avg</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🏆</div>
+        <div class="kpi-value">Top 3</div>
+        <div class="kpi-label">Niche for ROAS in India</div>
+        <span class="kpi-tag tag-purple">Beauty &amp; Skincare</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">⚡</div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-label">Urgent Actions Today</div>
+        <span class="kpi-tag tag-red">Act Now</span>
+      </div>
+    </div>
+
+    <!-- Brand DNA + Meta Updates -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🌿 Nature Foody Brand DNA</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="kpi-tag tag-green" style="padding:5px 12px;font-size:11px;">✅ 100% Natural</span>
+            <span class="kpi-tag tag-green" style="padding:5px 12px;font-size:11px;">✅ Handmade</span>
+            <span class="kpi-tag tag-green" style="padding:5px 12px;font-size:11px;">✅ Farm-Grown</span>
+            <span class="kpi-tag tag-green" style="padding:5px 12px;font-size:11px;">✅ Chemical-Free</span>
+            <span class="kpi-tag tag-green" style="padding:5px 12px;font-size:11px;">✅ Freshly Made</span>
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.7;">
+            Based in <strong>Kanchipuram, Tamil Nadu</strong>. Tagline: <em>"Nature's Best, Crafted for Your Skin."</em>
+            Authentic local-brand story that resonates powerfully with modern Indian consumers seeking clean beauty alternatives.
+          </p>
+          <div style="background:var(--green-light);border-radius:10px;padding:12px 14px;">
+            <p style="font-size:12px;font-weight:700;color:var(--green);">💡 Key Ad Angle:</p>
+            <p style="font-size:11.5px;color:var(--green);margin-top:4px;">"Made in Kanchipuram. Loved across India." — Use this local pride + authenticity framing in every campaign.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📰 Meta Platform Updates — March 2026</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="background:var(--green-light);border-radius:10px;padding:10px 14px;">
+            <p style="font-size:12px;font-weight:700;color:var(--green);">📲 WhatsApp Status Ads are LIVE</p>
+            <p style="font-size:11px;color:var(--muted);margin-top:2px;">Auto-activated in Traffic campaigns. Huge for India — activate immediately.</p>
+          </div>
+          <div style="background:var(--blue-light);border-radius:10px;padding:10px 14px;">
+            <p style="font-size:12px;font-weight:700;color:var(--blue);">🧵 Threads Ads Expanding</p>
+            <p style="font-size:11px;color:var(--muted);margin-top:2px;">Reach Gen Z skin-conscious buyers. Test ₹200–300/day.</p>
+          </div>
+          <div style="background:var(--purple-light);border-radius:10px;padding:10px 14px;">
+            <p style="font-size:12px;font-weight:700;color:var(--purple);">🎯 New Engagement Retargeting Filters</p>
+            <p style="font-size:11px;color:var(--muted);margin-top:2px;">Retarget by Reel watch % + time frame. Game-changer for warm audiences.</p>
+          </div>
+          <div style="background:var(--orange-light);border-radius:10px;padding:10px 14px;">
+            <p style="font-size:12px;font-weight:700;color:var(--orange);">🎞️ Multi-Format Ads in One Unit</p>
+            <p style="font-size:11px;color:var(--muted);margin-top:2px;">Upload 3–5 variants, Meta auto-optimizes across Feed, Stories &amp; Reels.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Categories -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">📦 Product Portfolio Overview</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+        <div style="background:var(--green-light);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:6px;">✨</div>
+          <div style="font-weight:800;font-size:13px;color:var(--green);">Face Care</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Serums · Sunscreen · Gel · Rose Water · Face Pack</div>
+        </div>
+        <div style="background:var(--purple-light);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:6px;">💇</div>
+          <div style="font-weight:800;font-size:13px;color:var(--purple);">Hair Care</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Oils · Shampoo · Serum · Tonic · Hair Dye Kit</div>
+        </div>
+        <div style="background:var(--orange-light);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:6px;">💄</div>
+          <div style="font-weight:800;font-size:13px;color:var(--orange);">Lips Care</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Tinted Balms · Lip Scrub · Juicy Lips Combo</div>
+        </div>
+        <div style="background:var(--blue-light);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:6px;">🛁</div>
+          <div style="font-weight:800;font-size:13px;color:var(--blue);">Body Care</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Soaps · Bath Salt · Body Pack · Hibiscus</div>
+        </div>
+        <div style="background:var(--yellow-light);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:6px;">👁️</div>
+          <div style="font-weight:800;font-size:13px;color:var(--yellow);">Eye Care</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Eye Cream · Under Eye Serum · Lash &amp; Brow Serum</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ ALERTS ============ -->
+  <div id="tab-alerts" class="section">
+    <div class="section-title">🚨 Performance Drop Alerts <span class="section-sub">— Watch Out For These Right Now</span></div>
+
+    <div class="alert-card urgent">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-content">
+        <h4>URGENT — Set Up Meta Conversions API (CAPI)</h4>
+        <p>Relying only on Shopify Pixel? You're missing <strong>20–40% of actual conversions</strong> due to iOS privacy restrictions. Go to Shopify Admin → Apps → Meta → Enable Conversions API. Do this before spending another rupee on ads.</p>
+      </div>
+    </div>
+
+    <div class="alert-card urgent">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <h4>Ad Fatigue — Refresh Creatives Every 10–12 Days</h4>
+        <p>Meta's 2026 algorithm shows ads more aggressively in short bursts. If the same creative runs past 12 days, your <strong>CPM rises sharply and CTR drops</strong>. Build a creative rotation calendar now.</p>
+      </div>
+    </div>
+
+    <div class="alert-card warning">
+      <div class="alert-icon">🟡</div>
+      <div class="alert-content">
+        <h4>Broad Targeting Is Losing Power</h4>
+        <p>Interest-based targeting (e.g. "Ayurveda," "organic skincare") is now mostly a <em>suggestion</em> to Meta's AI — not a hard filter. <strong>Shift budget toward Advantage+ audience settings</strong> instead of manual interest stacking.</p>
+      </div>
+    </div>
+
+    <div class="alert-card warning">
+      <div class="alert-icon">🟡</div>
+      <div class="alert-content">
+        <h4>Free Shipping / Gift Offer Not Visible Enough</h4>
+        <p>Your ₹999 free shipping and ₹1,200 free gift are powerful purchase triggers — but likely invisible in current ads. <strong>Make these the headline</strong> of at least one active campaign. Many brands lose sales simply from low offer awareness.</p>
+      </div>
+    </div>
+
+    <div class="alert-card info">
+      <div class="alert-icon">🔵</div>
+      <div class="alert-content">
+        <h4>Summer Season Approaching — Activate Sunscreen Campaigns</h4>
+        <p>April–June Indian summer = peak demand for SPF products. Your <strong>Cream Gel SPF 50 PA++++</strong> should be front-and-center starting <em>this week</em>. Bundle with Aloe Vera Gel for a "Summer Skin Protection Duo" campaign.</p>
+      </div>
+    </div>
+
+    <div class="alert-card success">
+      <div class="alert-icon">🟢</div>
+      <div class="alert-content">
+        <h4>WhatsApp Status Ads — Opportunity to Capture Now</h4>
+        <p>New placement live this month. Indian consumers are deeply active on WhatsApp. Natural beauty brands who activate <strong>WhatsApp Status placements now</strong> will get lower CPMs before competition heats up.</p>
+      </div>
+    </div>
+
+    <div class="alert-card success">
+      <div class="alert-icon">🟢</div>
+      <div class="alert-content">
+        <h4>Eye Care Sub-Category is Underserved — Move Fast</h4>
+        <p>Under-eye concerns (dark circles, puffiness) are exploding on Instagram Reels in India. Your <strong>Eye Radiance 360 Cream</strong> &amp; <strong>Under Eye Serum</strong> face very low competition from indie natural brands in this niche.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STRATEGY ============ -->
+  <div id="tab-strategy" class="section">
+    <div class="section-title">🎯 Winning Campaign Strategies <span class="section-sub">— For Nature Foody Right Now</span></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🔍 Strategy 1 — Concern-First Campaign Architecture</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">Stop targeting by demographics. Start by <strong>skin/hair concern</strong>. Each concern = its own ad set + creative + landing page.</p>
+        <div class="concern-grid">
+          <div class="concern-chip" style="background:var(--red-light);border-color:var(--red);color:var(--red);">
+            <span class="icon">💆</span> Hairfall → Hair Growth Oil
+          </div>
+          <div class="concern-chip" style="background:var(--yellow-light);border-color:var(--yellow);color:var(--yellow);">
+            <span class="icon">🌟</span> Pigmentation → Brightening Serum
+          </div>
+          <div class="concern-chip" style="background:var(--orange-light);border-color:var(--orange);color:var(--orange);">
+            <span class="icon">👄</span> Chapped Lips → Tinted Lip Balm
+          </div>
+          <div class="concern-chip" style="background:var(--blue-light);border-color:var(--blue);color:var(--blue);">
+            <span class="icon">❄️</span> Dandruff → Moroccan Oil Shampoo
+          </div>
+          <div class="concern-chip" style="background:var(--purple-light);border-color:var(--purple);color:var(--purple);">
+            <span class="icon">👁️</span> Tired Eyes → Eye Radiance Cream
+          </div>
+          <div class="concern-chip" style="background:var(--green-light);border-color:var(--green);color:var(--green);">
+            <span class="icon">💧</span> Dryness → Anytime Lotion
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚡ Strategy 2 — Advantage+ Shopping Campaign (ASC)</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">One consolidated campaign. Let Meta's AI decide audience, placement, and budget allocation. Best structure for 2026.</p>
+        <div style="background:var(--green-light);border-radius:10px;padding:14px;margin-bottom:12px;">
+          <p style="font-size:12px;font-weight:700;color:var(--green);">📋 Setup</p>
+          <p style="font-size:11.5px;color:var(--green);margin-top:4px;">Full product catalog → Advantage+ ASC → ₹500–800/day starting budget → Scale 10–15% every 4 days</p>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted);line-height:1.6;">
+          Meta's AI models now predict <strong>conversion probability</strong> — learning which users are likely to actually buy, not just click. ASC leverages this better than manual campaigns.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🎁 Strategy 3 — Free Gift Threshold Push</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">Drive AOV above ₹999 (free shipping) and ₹1,200 (free gift bowl). Build a dedicated campaign around this offer.</p>
+        <div style="background:var(--orange-light);border-radius:10px;padding:14px;">
+          <p style="font-size:11.5px;font-weight:700;color:var(--orange);">Suggested Headline:</p>
+          <p style="font-size:13px;font-weight:800;color:var(--dark);margin-top:6px;font-style:italic;">"Spend ₹999, get FREE delivery.<br>Spend ₹1,200, get a FREE gift!"</p>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:10px;">Run as a conversion campaign. Reduces cart abandonment and boosts average order value within 3–5 days of launch.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📦 Strategy 4 — Combo Bundle Ads</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">Combos have higher AOV and better perceived value. A single creative showing "everything you need" converts 3× better than single-product ads.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);font-size:12px;">
+            <strong>✨ Brightening Combo</strong> → Face Glow Serum + Brightening Pack
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);font-size:12px;">
+            <strong>💧 Hydration Combo</strong> → Anytime Lotion + Aloe Vera Gel
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);font-size:12px;">
+            <strong>💇 Hair Dye Kit</strong> → Amla + Henna + Indigo combo
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);font-size:12px;">
+            <strong>☀️ Summer Duo</strong> → SPF 50 Sunscreen + Aloe Vera Gel
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tripwire Funnel -->
+    <div class="card">
+      <div class="card-title">🔄 Strategy 5 — Under ₹149 Tripwire Funnel</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Use your budget sub-₹149 products as low-cost entry points to acquire new customers, then retarget with higher-value items.</p>
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
+        <div style="background:var(--blue-light);border-radius:12px;padding:14px 18px;text-align:center;flex:1;min-width:140px;">
+          <div style="font-size:20px;margin-bottom:4px;">🪴</div>
+          <div style="font-size:12px;font-weight:700;color:var(--blue);">Step 1 — Acquire</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Sub-₹149 ad: Neem Comb, Amla Powder, Loofah</div>
+        </div>
+        <div style="font-size:20px;padding:0 10px;color:var(--muted);">→</div>
+        <div style="background:var(--yellow-light);border-radius:12px;padding:14px 18px;text-align:center;flex:1;min-width:140px;">
+          <div style="font-size:20px;margin-bottom:4px;">📧</div>
+          <div style="font-size:12px;font-weight:700;color:var(--yellow);">Step 2 — Ecosystem</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Customer is now in your database &amp; pixel audience</div>
+        </div>
+        <div style="font-size:20px;padding:0 10px;color:var(--muted);">→</div>
+        <div style="background:var(--green-light);border-radius:12px;padding:14px 18px;text-align:center;flex:1;min-width:140px;">
+          <div style="font-size:20px;margin-bottom:4px;">💰</div>
+          <div style="font-size:12px;font-weight:700;color:var(--green);">Step 3 — Upsell</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Retarget with Face Glow Serum, Hair Growth Oil, Combos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CREATIVE ============ -->
+  <div id="tab-creative" class="section">
+    <div class="section-title">🎨 Creative Trends <span class="section-sub">— What's Working in Indian Skincare Right Now</span></div>
+
+    <div class="grid-auto">
+      <div class="card">
+        <div class="creative-card" style="margin-bottom:12px;">
+          <div class="creative-rank" style="background:var(--green-light);">🎥</div>
+          <div class="creative-body">
+            <h5>#1 — UGC (User-Generated Content) Videos</h5>
+            <p>Raw, authentic phone-shot videos of real customers. No studio needed. A customer applying Face Glow Serum saying "My skin looks brighter in 2 weeks" outperforms any polished production.</p>
+            <span class="creative-perf tag-green">36.8% share of winning ads</span>
+          </div>
+        </div>
+        <div style="background:var(--green-light);border-radius:10px;padding:12px;">
+          <p style="font-size:11.5px;color:var(--green);font-weight:600;">💡 For Nature Foody: Brief 3 existing customers to film 30-second testimonials for Face Serum, Hair Oil &amp; Brightening Serum.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="creative-card" style="margin-bottom:12px;">
+          <div class="creative-rank" style="background:var(--purple-light);">📸</div>
+          <div class="creative-body">
+            <h5>#2 — Before &amp; After with Skin Texture Close-Ups</h5>
+            <p>62% of top-performing skincare ads pair UGC with visual proof. Dull skin close-up → bright healthy skin after using your Brightening Serum. Raw and real beats polished every time.</p>
+            <span class="creative-perf tag-purple">62% of top skincare ads</span>
+          </div>
+        </div>
+        <div style="background:var(--purple-light);border-radius:10px;padding:12px;">
+          <p style="font-size:11.5px;color:var(--purple);font-weight:600;">💡 Use the Brightening Water Serum: "Visible results in 4 weeks" claim + before/after photo series.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="creative-card" style="margin-bottom:12px;">
+          <div class="creative-rank" style="background:var(--orange-light);">🏭</div>
+          <div class="creative-body">
+            <h5>#3 — Founder Story / Handmade Process Videos</h5>
+            <p>Show the founder or team preparing products. Show raw farm-grown ingredients. Show the handcrafting process from Kanchipuram. Builds massive trust — especially in India where chemical-brand skepticism is rising.</p>
+            <span class="creative-perf tag-orange">Highest brand trust builder</span>
+          </div>
+        </div>
+        <div style="background:var(--orange-light);border-radius:10px;padding:12px;">
+          <p style="font-size:11.5px;color:var(--orange);font-weight:600;">💡 "Made in Kanchipuram with love — no chemicals, just nature." Film a 45-second process reel.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="creative-card" style="margin-bottom:12px;">
+          <div class="creative-rank" style="background:var(--blue-light);">🎯</div>
+          <div class="creative-body">
+            <h5>#4 — Single Hero Benefit Ads</h5>
+            <p>Don't list 5 benefits in one ad. Pick ONE. "Reduces dark spots in 4 weeks." One claim, one creative, one CTA. These run 3× longer and convert 40% better than multi-claim ads.</p>
+            <span class="creative-perf tag-blue">3× longer run time</span>
+          </div>
+        </div>
+        <div style="background:var(--blue-light);border-radius:10px;padding:12px;">
+          <p style="font-size:11.5px;color:var(--blue);font-weight:600;">💡 Face Glow Serum ad: "Bright complexion in 4 weeks. Naturally." Just that — nothing else.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="creative-card" style="margin-bottom:12px;">
+          <div class="creative-rank" style="background:var(--red-light);">⏱️</div>
+          <div class="creative-body">
+            <h5>#5 — Problem Hook in First 3 Seconds</h5>
+            <p>Start your Reel with a direct problem statement. "Fed up of dark spots that won't go?" or "Hair falling out every morning?" Lead with pain, then offer the solution. You have 3 seconds to stop the scroll.</p>
+            <span class="creative-perf tag-red">Critical — 3 second rule</span>
+          </div>
+        </div>
+        <div style="background:var(--red-light);border-radius:10px;padding:12px;">
+          <p style="font-size:11.5px;color:var(--red);font-weight:600;">💡 Hair Growth Oil hook: "Noticed your hairline moving back? 🚨 This fixed mine in 6 weeks."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Format Guide -->
+    <div class="card">
+      <div class="card-title">📐 Creative Format Guide — 2026 Best Sizes</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+        <div style="text-align:center;background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);">
+          <div style="font-size:28px;margin-bottom:6px;">📱</div>
+          <div style="font-weight:700;font-size:12px;">Reels / Stories</div>
+          <div style="font-size:20px;font-weight:800;color:var(--green);margin:6px 0;">9:16</div>
+          <div style="font-size:11px;color:var(--muted);">1080 × 1920 px</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);">
+          <div style="font-size:28px;margin-bottom:6px;">🖼️</div>
+          <div style="font-weight:700;font-size:12px;">Feed (Preferred)</div>
+          <div style="font-size:20px;font-weight:800;color:var(--blue);margin:6px 0;">4:5</div>
+          <div style="font-size:11px;color:var(--muted);">1080 × 1350 px</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);">
+          <div style="font-size:28px;margin-bottom:6px;">⬛</div>
+          <div style="font-weight:700;font-size:12px;">Feed Square</div>
+          <div style="font-size:20px;font-weight:800;color:var(--orange);margin:6px 0;">1:1</div>
+          <div style="font-size:11px;color:var(--muted);">1080 × 1080 px</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);">
+          <div style="font-size:28px;margin-bottom:6px;">📺</div>
+          <div style="font-weight:700;font-size:12px;">Landscape</div>
+          <div style="font-size:20px;font-weight:800;color:var(--purple);margin:6px 0;">16:9</div>
+          <div style="font-size:11px;color:var(--muted);">1920 × 1080 px</div>
+        </div>
+      </div>
+      <div style="background:var(--yellow-light);border-radius:10px;padding:12px;margin-top:14px;">
+        <p style="font-size:12px;font-weight:700;color:var(--yellow);">⚠️ Upload 3–5 creative variants per ad set — Meta's multi-format system auto-optimizes placement.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ AUDIENCE ============ -->
+  <div id="tab-audience" class="section">
+    <div class="section-title">👥 Audience Strategy <span class="section-sub">— Who to Target for Nature Foody</span></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🎯 Primary Audience — High Probability Buyers</div>
+        <div class="audience-card">
+          <h5>🙍‍♀️ Core Demographic</h5>
+          <p>Women aged <strong>22–40</strong> in Tamil Nadu, Karnataka, Maharashtra &amp; Delhi. Interest signals: organic beauty, Ayurveda, natural skincare, clean beauty, herbal products.</p>
+        </div>
+        <div class="audience-card">
+          <h5>🎁 Gifting Audience</h5>
+          <p>Women 25–45 purchasing gifts around Pongal, Diwali, Ugadi, Mother's Day. Run combo/bundle ads during festival windows. Massive untapped revenue opportunity.</p>
+        </div>
+        <div class="audience-card">
+          <h5>📱 Platform Behavior</h5>
+          <p>Heavy Instagram Reels consumers aged 18–34. Heavy Facebook users aged 30–50 in Tier-2/3 cities. WhatsApp Status viewers across all demographics.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔁 Retargeting Segments — Critical Audiences to Build</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="border-left:4px solid var(--red);padding:10px 14px;background:var(--red-light);border-radius:0 10px 10px 0;">
+            <p style="font-size:12px;font-weight:700;color:var(--red);">🛒 Cart Abandoners</p>
+            <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Dynamic product ads showing exactly what they left behind. "Still thinking about it?" creative. Highest intent audience you have.</p>
+          </div>
+          <div style="border-left:4px solid var(--orange);padding:10px 14px;background:var(--orange-light);border-radius:0 10px 10px 0;">
+            <p style="font-size:12px;font-weight:700;color:var(--orange);">👀 Product Page Viewers (7 days)</p>
+            <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">"Here's why 200+ customers love this." Show social proof + the specific product they viewed.</p>
+          </div>
+          <div style="border-left:4px solid var(--blue);padding:10px 14px;background:var(--blue-light);border-radius:0 10px 10px 0;">
+            <p style="font-size:12px;font-weight:700;color:var(--blue);">🎥 Reel Watchers (75%+ view)</p>
+            <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">New 2026 filter. Warm audience. Retarget within 7 days with a direct purchase offer or discount.</p>
+          </div>
+          <div style="border-left:4px solid var(--green);padding:10px 14px;background:var(--green-light);border-radius:0 10px 10px 0;">
+            <p style="font-size:12px;font-weight:700;color:var(--green);">🏆 Past Purchasers</p>
+            <p style="font-size:11.5px;color:var(--muted);margin-top:3px;">Upsell to a complementary product or combo. Best LTV expansion channel you have.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🪞 Lookalike Audiences — Your Best Prospecting Lever</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+        <div style="background:var(--bg);border-radius:12px;padding:14px;border:1.5px solid var(--border);">
+          <p style="font-weight:700;font-size:12.5px;margin-bottom:6px;">1% Lookalike — Customer List</p>
+          <p style="font-size:11.5px;color:var(--muted);">Upload existing buyers to Meta → Create 1% Lookalike in India. Statistically your most likely next buyer. Requires 100–200 past customers.</p>
+          <span class="kpi-tag tag-green" style="margin-top:8px;display:inline-block;">🏆 Highest Priority</span>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px;border:1.5px solid var(--border);">
+          <p style="font-weight:700;font-size:12.5px;margin-bottom:6px;">1% Lookalike — Website Visitors</p>
+          <p style="font-size:11.5px;color:var(--muted);">Use if customer list is below 100. Website visitors are strong intent signal. Requires working Pixel + CAPI setup.</p>
+          <span class="kpi-tag tag-blue" style="margin-top:8px;display:inline-block;">Use as backup</span>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px;border:1.5px solid var(--border);">
+          <p style="font-weight:700;font-size:12.5px;margin-bottom:6px;">2–3% Lookalike — Scale</p>
+          <p style="font-size:11.5px;color:var(--muted);">Once 1% LAL is converting at target ROAS, expand to 2–3% for scale. Slightly less precise but much larger pool.</p>
+          <span class="kpi-tag tag-orange" style="margin-top:8px;display:inline-block;">Scale phase</span>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px;border:1.5px solid var(--border);">
+          <p style="font-weight:700;font-size:12.5px;margin-bottom:6px;">Engagement Lookalike</p>
+          <p style="font-size:11.5px;color:var(--muted);">Based on Instagram page engagers + Reel watchers. Good for brands with strong organic following. Build this alongside customer LAL.</p>
+          <span class="kpi-tag tag-purple" style="margin-top:8px;display:inline-block;">Good supplement</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BUDGET ============ -->
+  <div id="tab-budget" class="section">
+    <div class="section-title">💰 Budget &amp; ROAS Strategy <span class="section-sub">— Recommended Daily Allocation</span></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">📊 Daily Budget Allocation</div>
+        <table class="budget-table">
+          <thead>
+            <tr><th>Campaign Type</th><th>Daily Budget</th><th>Objective</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>⚡ Advantage+ Shopping (Full Catalog)</td><td>₹500–800</td><td>Purchase / ROAS</td></tr>
+            <tr><td>🎯 Concern-Based Prospecting (3–5 ad sets)</td><td>₹200–300</td><td>Purchase</td></tr>
+            <tr><td>🛒 Cart Abandonment Retargeting</td><td>₹100–150</td><td>Purchase</td></tr>
+            <tr><td>🎁 Free Gift / Free Shipping Campaign</td><td>₹150–200</td><td>Traffic / Purchase</td></tr>
+            <tr><td><strong>Total Recommended</strong></td><td><strong>₹950–1,450</strong></td><td>All Objectives</td></tr>
+          </tbody>
+        </table>
+        <div style="background:var(--yellow-light);border-radius:10px;padding:12px;margin-top:12px;">
+          <p style="font-size:11.5px;color:var(--yellow);font-weight:700;">⚠️ Scaling Rule: Never increase budget by more than 15–20% every 3–4 days. Bigger jumps reset the learning phase and spike CPM.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📈 ROAS Benchmarks — Indian Skincare Brands</div>
+
+        <div style="margin-bottom:20px;">
+          <div class="prog-item">
+            <div class="prog-label"><span>Good ROAS</span><span style="color:var(--muted);">2.5× – 3.5×</span></div>
+            <div class="prog-bar"><div class="prog-fill" style="width:40%;background:var(--blue);"></div></div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-label"><span>Strong ROAS</span><span style="color:var(--green);">4× – 6×</span></div>
+            <div class="prog-bar"><div class="prog-fill" style="width:65%;background:var(--green);"></div></div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-label"><span>Excellent ROAS 🏆</span><span style="color:var(--orange);">6×+</span></div>
+            <div class="prog-bar"><div class="prog-fill" style="width:100%;background:linear-gradient(90deg,var(--green),var(--orange));"></div></div>
+          </div>
+        </div>
+
+        <p style="font-size:11.5px;color:var(--muted);line-height:1.6;">6×+ ROAS is achievable with strong UGC creative + tight retargeting. Beauty and skincare are among the <strong>highest ROAS niches</strong> for Meta Ads in India in 2026.</p>
+
+        <div style="background:var(--green-light);border-radius:10px;padding:12px;margin-top:12px;">
+          <p style="font-size:12px;font-weight:700;color:var(--green);">🎯 Your Initial Target: 3× ROAS</p>
+          <p style="font-size:11px;color:var(--green);margin-top:3px;">Once stable at 3×, optimize creative and retargeting to push toward 4–5×. Scale budget only after hitting target ROAS consistently for 7 days.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seasonal Opportunities -->
+    <div class="card">
+      <div class="card-title">📅 Seasonal Revenue Opportunities — 2026 Calendar</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+        <div style="background:var(--orange-light);border-radius:12px;padding:14px;">
+          <p style="font-weight:800;font-size:12px;color:var(--orange);">☀️ Apr–Jun 2026</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:4px;">Indian Summer → SPF 50 Sunscreen, Aloe Vera Gel, Body Brightening. Start ads <strong>NOW</strong>.</p>
+        </div>
+        <div style="background:var(--green-light);border-radius:12px;padding:14px;">
+          <p style="font-weight:800;font-size:12px;color:var(--green);">💐 May 2026</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:4px;">Mother's Day → Bundle combos as gifts. Run gifting-angle ads targeting daughters 22–35.</p>
+        </div>
+        <div style="background:var(--purple-light);border-radius:12px;padding:14px;">
+          <p style="font-weight:800;font-size:12px;color:var(--purple);">💧 Jul–Sep 2026</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:4px;">Monsoon → Hairfall &amp; Dandruff peak season. Hair Growth Oil + Moroccan Shampoo front-and-center.</p>
+        </div>
+        <div style="background:var(--yellow-light);border-radius:12px;padding:14px;">
+          <p style="font-weight:800;font-size:12px;color:var(--yellow);">🪔 Oct–Nov 2026</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:4px;">Diwali Gift Season → Highest gifting revenue window. Prep bundles &amp; festive packaging now.</p>
+        </div>
+        <div style="background:var(--blue-light);border-radius:12px;padding:14px;">
+          <p style="font-weight:800;font-size:12px;color:var(--blue);">🎊 Jan 2027</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:4px;">Pongal + New Year → "New Year, New Skin" campaign. High purchase intent for skincare resolutions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ACTIONS ============ -->
+  <div id="tab-actions" class="section">
+    <div class="section-title">✅ Today's Action Plan <span class="section-sub">— Do These 5 Things Today</span></div>
+
+    <ul class="action-list">
+      <li class="action-item" style="border-left:4px solid var(--red);">
+        <div class="action-num" style="background:var(--red);">1</div>
+        <div class="action-text">
+          <h5>🔴 URGENT — Set Up Meta Conversions API on Shopify</h5>
+          <p>Shopify Admin → Apps → Meta → Enable Conversions API. You may be missing 20–40% of real conversion data right now. Without this, your ad optimization is running blind. This is your single highest-leverage action today.</p>
+        </div>
+      </li>
+      <li class="action-item" style="border-left:4px solid var(--orange);">
+        <div class="action-num" style="background:var(--orange);">2</div>
+        <div class="action-text">
+          <h5>🎥 Create 3 UGC Video Briefs — Send to Customers Today</h5>
+          <p>Brief 3 existing customers or team members to film 30-second authentic testimonial videos for: (a) Face Glow Serum, (b) Hair Growth Oil, (c) Brightening Water Serum. Phone camera, natural light, real reaction. These will be your top-performing creatives within 48 hours of launch.</p>
+        </div>
+      </li>
+      <li class="action-item" style="border-left:4px solid var(--yellow);">
+        <div class="action-num" style="background:var(--yellow);">3</div>
+        <div class="action-text">
+          <h5>🎯 Launch One Concern-Specific Campaign</h5>
+          <p>Pick your highest-selling product (likely Hair Growth Oil or Face Glow Serum). Build one campaign targeting the specific concern (hairfall or dark spots). Headline = the problem, not the product name. "Tired of waking up to a pillow full of hair?" → Hair Growth Oil.</p>
+        </div>
+      </li>
+      <li class="action-item" style="border-left:4px solid var(--blue);">
+        <div class="action-num" style="background:var(--blue);">4</div>
+        <div class="action-text">
+          <h5>🎁 Create a "Free Gift + Free Shipping" Static Ad</h5>
+          <p>One bold static image: "Free delivery on orders above ₹999. FREE Gift on orders above ₹1,200." Run as a conversion campaign alongside your existing ads. Your AOV will increase within 3–5 days. This is free revenue sitting on the table.</p>
+        </div>
+      </li>
+      <li class="action-item" style="border-left:4px solid var(--green);">
+        <div class="action-num">5</div>
+        <div class="action-text">
+          <h5>🏗️ Build Your Retargeting Custom Audiences Now</h5>
+          <p>Even if you're not running retargeting ads yet — ensure your Pixel is firing correctly and set up these 4 custom audiences today: Website Visitors (90 days) · Add-to-Cart (30 days) · Purchase (180 days) · Instagram Engagers (90 days). You want 500–1,000 people in these pools before launching retargeting campaigns.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <!-- Bonus insight -->
+    <div class="card" style="background:linear-gradient(135deg,#1b4332,#2d7a4f);color:white;border:none;">
+      <div class="card-title" style="color:white;">💡 The Minimalist (India) Playbook — Applied to Nature Foody</div>
+      <p style="font-size:12.5px;opacity:0.9;line-height:1.7;margin-bottom:14px;">India's fastest-growing D2C skincare brand used a similar natural/clean positioning. Their winning Meta Ads formula — directly applicable to Nature Foody:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:12px;">
+          <p style="font-size:12px;font-weight:700;">🎯 Concern-specific landing pages</p>
+          <p style="font-size:11px;opacity:0.8;margin-top:3px;">Not the homepage — the collection page for each concern</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:12px;">
+          <p style="font-size:12px;font-weight:700;">🧪 Ingredient transparency creatives</p>
+          <p style="font-size:11px;opacity:0.8;margin-top:3px;">"Only 5 ingredients. You can read every one."</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:12px;">
+          <p style="font-size:12px;font-weight:700;">⚔️ Comparison vs. chemical brands</p>
+          <p style="font-size:11px;opacity:0.8;margin-top:3px;">"No parabens. No sulphates. Just results."</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:12px;">
+          <p style="font-size:12px;font-weight:700;">🌍 Local pride + authenticity</p>
+          <p style="font-size:11px;opacity:0.8;margin-top:3px;">"Made in Kanchipuram. Loved across India."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  🌿 Nature Foody Meta Ads Intelligence Dashboard &nbsp;·&nbsp; naturefoody.com &nbsp;·&nbsp; Generated March 26, 2026 &nbsp;·&nbsp; Next Report: Bring your current ad spend &amp; ROAS numbers for deeper optimization
+</div>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.closest('.nav-tab').classList.add('active');
+  }
+</script>
+</body>
+</html>

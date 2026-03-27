@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nature Foody — Daily Campaign Report · 26 March 2026</title>
+<style>
+  :root { --green: #16a34a; --yellow: #ca8a04; --red: #dc2626; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --muted: #64748b; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 16px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+  .header-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+  .stat-card .label { font-size: 0.75rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; }
+  .stat-card .value { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+  .stat-card .value.green { color: var(--green); }
+  .stat-card .value.yellow { color: var(--yellow); }
+  .stat-card .value.red { color: var(--red); }
+  .section { background: var(--card); border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .section h2 { font-size: 1.1rem; margin-bottom: 14px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: #f1f5f9; text-align: left; padding: 10px 8px; font-weight: 600; white-space: nowrap; }
+  td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; }
+  tr:last-child td { border-bottom: none; }
+  .status-green { color: var(--green); font-weight: 700; }
+  .status-yellow { color: var(--yellow); font-weight: 700; }
+  .status-red { color: var(--red); font-weight: 700; }
+  .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; }
+  .alert-critical { background: #fef2f2; border-left: 4px solid var(--red); }
+  .alert-warning { background: #fffbeb; border-left: 4px solid var(--yellow); }
+  .alert-info { background: #eff6ff; border-left: 4px solid #3b82f6; }
+  .alert strong { display: block; margin-bottom: 2px; }
+  .action-box { background: linear-gradient(135deg, #1e293b, #334155); color: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .action-box h2 { color: #fff; border-bottom-color: #475569; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #475569; }
+  .action-box p { font-size: 1rem; line-height: 1.7; }
+  .duo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .duo-metric { background: #f8fafc; border-radius: 8px; padding: 12px; }
+  .duo-metric .dm-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+  .duo-metric .dm-value { font-size: 1.2rem; font-weight: 700; }
+  .duo-metric .dm-target { font-size: 0.78rem; color: var(--muted); }
+  .footer { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 28px; padding-top: 16px; border-top: 1px solid #e2e8f0; }
+  @media (max-width: 600px) {
+    .header-stats { grid-template-columns: repeat(2, 1fr); }
+    .duo-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 8px 5px; }
+  }
+  .overflow-x { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<h1>Nature Foody — Daily Campaign Report</h1>
+<p class="subtitle">Thursday, 26 March 2026 · Facebook Ads · Account 364601397042030</p>
+
+<!-- HEADER STATS -->
+<div class="header-stats">
+  <div class="stat-card">
+    <div class="label">Total Spend</div>
+    <div class="value">₹1,444</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Total Revenue</div>
+    <div class="value">₹3,138</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Blended ROAS</div>
+    <div class="value yellow">2.17×</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Purchases</div>
+    <div class="value">4</div>
+  </div>
+</div>
+
+<!-- SECTION 1: SCORECARD -->
+<div class="section">
+  <h2>1 · Campaign Scorecard</h2>
+  <div class="overflow-x">
+  <table>
+    <thead>
+      <tr>
+        <th>Campaign</th>
+        <th>Spend</th>
+        <th>Revenue</th>
+        <th>ROAS</th>
+        <th>Purchases</th>
+        <th>Freq.</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Adv+ Winners | Perfomity 5/3</strong></td>
+        <td>₹454</td>
+        <td>₹2,779</td>
+        <td class="status-green">6.11×</td>
+        <td>3</td>
+        <td>1.16</td>
+        <td class="status-green">🟢 SCALING</td>
+      </tr>
+      <tr>
+        <td><strong>Campaign 13 – Beetroot</strong></td>
+        <td>₹137</td>
+        <td>₹359</td>
+        <td class="status-yellow">2.63×</td>
+        <td>1</td>
+        <td>1.13</td>
+        <td class="status-yellow">🟡 HOLD</td>
+      </tr>
+      <tr>
+        <td><strong>Offer Campaign – Sales – 30 June 2025</strong></td>
+        <td>₹409</td>
+        <td>₹0</td>
+        <td class="status-red">0×</td>
+        <td>0</td>
+        <td>1.16</td>
+        <td class="status-red">🔴 PAUSE/FIX</td>
+      </tr>
+      <tr>
+        <td><strong>Campaign 17 – Roshini Video</strong></td>
+        <td>₹138</td>
+        <td>₹0</td>
+        <td class="status-red">0×</td>
+        <td>0</td>
+        <td>1.16</td>
+        <td class="status-red">🔴 PAUSE/FIX</td>
+      </tr>
+      <tr>
+        <td><strong>adv+ | Perfomity Media | 24-03-26</strong></td>
+        <td>₹307</td>
+        <td>₹0</td>
+        <td class="status-red">0×</td>
+        <td>0</td>
+        <td>1.33</td>
+        <td class="status-red">🔴 PAUSE/FIX</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- SECTION 2: ALERTS -->
+<div class="section">
+  <h2>2 · Alerts</h2>
+
+  <div class="alert alert-critical">
+    <strong>🚨 WASTE ALERT — Offer Campaign – Sales – 30 June 2025</strong>
+    Spent ₹409 with zero purchases and zero revenue. ROAS is 0×. <strong>Action:</strong> Pause this campaign immediately or restructure audiences. 4 ad sets are all underperforming with high CPMs (₹94–₹305) and very low CTR (0.6%–2.6%). Budget is being wasted across cold, lookalike, and retargeting audiences alike.
+  </div>
+
+  <div class="alert alert-critical">
+    <strong>🚨 WASTE ALERT — adv+ | Perfomity Media | 24-03-26</strong>
+    Spent ₹307 with zero purchases. This new campaign (3 days old) is burning budget with extremely low CTR (0.76%) and no conversions. <strong>Action:</strong> Give it 1 more day max; if no purchases by tomorrow, pause and reallocate budget to the winning Adv+ Winners campaign.
+  </div>
+
+  <div class="alert alert-critical">
+    <strong>🚨 WASTE ALERT — Campaign 17 – Roshini Video</strong>
+    Spent ₹138 with zero purchases. <strong>Action:</strong> Review the landing page and checkout flow (see landing page alert below).
+  </div>
+
+  <div class="alert alert-warning">
+    <strong>⚠️ LANDING PAGE ISSUE — Campaign 17 – Roshini Video</strong>
+    CTR is a strong 4.25% (26 clicks) but ROAS is 0× with zero purchases. People are clicking but not buying. 4 add-to-carts suggest interest but the funnel drops off. <strong>Action:</strong> Check the landing page load speed, product page, and checkout flow. Ensure the offer/pricing is compelling and the page matches the ad creative.
+  </div>
+
+  <div class="alert alert-info">
+    <strong>ℹ️ Summer Daily Duo — NOT FOUND in active campaigns</strong>
+    The "Summer Daily Duo" combo campaign does not appear in yesterday's data. It may not have been launched yet or is currently paused. <strong>Action:</strong> If the campaign is ready, launch it today. The combo offer (₹999 for Anytime Lotion + SPF 50 + Raspberry Lip Balm + Gentle Cream Cleanser) was expected to be the main scaling vehicle.
+  </div>
+
+  <div class="alert alert-info">
+    <strong>ℹ️ "Offer Sales 4 hrs" — Still paused</strong>
+    This campaign previously achieved 6.91× ROAS but was paused. It has NOT been reactivated. <strong>Action:</strong> Consider reactivating with a controlled budget (₹500/day) to capture high-ROAS conversions again.
+  </div>
+</div>
+
+<!-- SECTION 3: SUMMER DAILY DUO FOCUS -->
+<div class="section">
+  <h2>3 · Summer Daily Duo Focus</h2>
+  <p style="color: var(--red); font-weight: 600; margin-bottom: 12px;">⚠️ Campaign NOT ACTIVE — No data available for yesterday</p>
+  <p style="margin-bottom: 12px;">The Summer Daily Duo combo campaign (Anytime Lotion + SPF 50 PA++++ Sunscreen + Raspberry Lip Balm + Gentle Cream Cleanser at ₹999) was not found in yesterday's active campaign data.</p>
+  <div class="duo-grid">
+    <div class="duo-metric">
+      <div class="dm-label">Yesterday ROAS</div>
+      <div class="dm-value" style="color:var(--red)">N/A</div>
+      <div class="dm-target">Target: 5×–7×</div>
+    </div>
+    <div class="duo-metric">
+      <div class="dm-label">Cost per Purchase</div>
+      <div class="dm-value" style="color:var(--red)">N/A</div>
+      <div class="dm-target">Target: below ₹200</div>
+    </div>
+    <div class="duo-metric">
+      <div class="dm-label">Add-to-Cart Rate</div>
+      <div class="dm-value" style="color:var(--red)">N/A</div>
+      <div class="dm-target">Target: above 4%</div>
+    </div>
+    <div class="duo-metric">
+      <div class="dm-label">Frequency</div>
+      <div class="dm-value" style="color:var(--red)">N/A</div>
+      <div class="dm-target">Safe limit: below 3×</div>
+    </div>
+  </div>
+  <p style="margin-top: 14px;"><strong>Scaling Recommendation: NO</strong> — Campaign needs to be launched/reactivated first. Priority action today.</p>
+</div>
+
+<!-- SECTION 4: TODAY'S #1 ACTION -->
+<div class="action-box">
+  <h2>4 · Today's Single Most Important Action</h2>
+  <p>
+    <strong style="font-size:1.15rem;">Pause the "Offer Campaign – Sales – 30 June 2025" immediately and reallocate its ₹409/day budget to the "Adv+ Winners | Perfomity 5/3" campaign.</strong><br><br>
+    The Offer Campaign is haemorrhaging money (₹409 spent, ₹0 revenue across all 4 ad sets). Meanwhile, Adv+ Winners is delivering a stellar 6.11× ROAS at ₹151 cost per purchase — well below your ₹200 target. Shifting budget here will amplify your best-performing campaign while stopping the biggest source of waste.
+  </p>
+</div>
+
+<!-- SECTION 5: BUDGET SCALING DECISION -->
+<div class="section">
+  <h2>5 · Budget Scaling Decision</h2>
+  <table>
+    <thead>
+      <tr><th>Campaign</th><th>Current Action</th><th>Budget Change</th><th>Reason</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Adv+ Winners | Perfomity 5/3</strong></td>
+        <td class="status-green">🟢 SCALE</td>
+        <td>+20%</td>
+        <td>ROAS 6.11× — strong performer. Increase budget by 20% today. If ROAS holds above 4× for 3 consecutive days, scale again.</td>
+      </tr>
+      <tr>
+        <td><strong>Campaign 13 – Beetroot</strong></td>
+        <td class="status-yellow">🟡 HOLD</td>
+        <td>No change</td>
+        <td>ROAS 2.63× — profitable but not scaling-ready. Maintain current budget and monitor.</td>
+      </tr>
+      <tr>
+        <td><strong>Offer Campaign – Sales</strong></td>
+        <td class="status-red">🔴 PAUSE</td>
+        <td>Pause</td>
+        <td>ROAS 0× — complete waste. Pause immediately and redirect budget.</td>
+      </tr>
+      <tr>
+        <td><strong>Campaign 17 – Roshini Video</strong></td>
+        <td class="status-red">🔴 REDUCE</td>
+        <td>−20%</td>
+        <td>ROAS 0× but CTR is 4.25%. Fix the landing page first, then reassess. Cut budget by 20% while diagnosing.</td>
+      </tr>
+      <tr>
+        <td><strong>adv+ | Perfomity Media | 24-03-26</strong></td>
+        <td class="status-red">🔴 WATCH</td>
+        <td>Hold 1 more day</td>
+        <td>New campaign (3 days). Has 6 ATCs but no purchases. Final chance tomorrow — pause if no conversion.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p style="text-align:center; font-weight:600; font-size:1rem; margin: 20px 0;">Next report: Tomorrow 8:00 AM</p>
+
+<div class="footer">
+  Report generated 27 March 2026, 08:00 AM IST · Data from Windsor AI · Nature Foody x Flint M
+</div>
+
+</body>
+</html>

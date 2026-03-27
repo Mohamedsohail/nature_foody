@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAC Meta Ads Dashboard — Daily Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;padding:16px}
+.container{max-width:1400px;margin:0 auto}
+h1{font-size:1.6rem;font-weight:700;color:#f8fafc}
+.subtitle{color:#94a3b8;font-size:0.85rem;margin-top:4px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.alert-bar{background:linear-gradient(135deg,#7f1d1d,#991b1b);border:1px solid #dc2626;border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.alert-bar .icon{font-size:1.5rem}
+.alert-bar .text{font-size:0.9rem;line-height:1.5}
+.alert-bar strong{color:#fca5a5}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.kpi-card{background:linear-gradient(135deg,#1e293b,#1a2332);border:1px solid #334155;border-radius:12px;padding:18px;text-align:center;transition:transform 0.2s}
+.kpi-card:hover{transform:translateY(-2px);border-color:#475569}
+.kpi-card .label{font-size:0.75rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kpi-card .value{font-size:1.7rem;font-weight:700;color:#f8fafc}
+.kpi-card .sub{font-size:0.7rem;margin-top:4px}
+.kpi-card .good{color:#4ade80}
+.kpi-card .warn{color:#fbbf24}
+.kpi-card .bad{color:#f87171}
+.section-title{font-size:1.15rem;font-weight:600;color:#f8fafc;margin:24px 0 14px;padding-bottom:6px;border-bottom:2px solid #334155}
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px;margin-bottom:24px}
+.chart-box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px}
+.chart-box h3{font-size:0.9rem;color:#cbd5e1;margin-bottom:12px}
+canvas{max-height:280px}
+table{width:100%;border-collapse:collapse;font-size:0.8rem}
+th{background:#1e293b;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;font-size:0.7rem;padding:10px 8px;text-align:left;position:sticky;top:0}
+td{padding:10px 8px;border-bottom:1px solid #1e293b}
+tr:hover{background:#1e293b80}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:600;letter-spacing:0.3px}
+.badge-scale{background:#065f46;color:#6ee7b7}
+.badge-optimize{background:#78350f;color:#fcd34d}
+.badge-pause{background:#7f1d1d;color:#fca5a5}
+.badge-monitor{background:#1e3a5f;color:#93c5fd}
+.campaign-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;margin-bottom:24px}
+.camp-card{background:linear-gradient(135deg,#1e293b,#172033);border:1px solid #334155;border-radius:12px;padding:20px}
+.camp-card h3{font-size:1rem;color:#f8fafc;margin-bottom:12px}
+.camp-card .stat-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #334155;font-size:0.85rem}
+.camp-card .stat-row:last-child{border-bottom:none}
+.camp-card .stat-label{color:#94a3b8}
+.camp-card .stat-val{font-weight:600}
+.action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px}
+.action-card{border-radius:12px;padding:18px;border:1px solid}
+.action-stop{background:linear-gradient(135deg,#1a0a0a,#2d1111);border-color:#7f1d1d}
+.action-scale{background:linear-gradient(135deg,#0a1a0f,#112d17);border-color:#065f46}
+.action-optimize{background:linear-gradient(135deg,#1a150a,#2d2211);border-color:#78350f}
+.action-check{background:linear-gradient(135deg,#0a0f1a,#111d2d);border-color:#1e3a5f}
+.action-card h4{font-size:0.9rem;margin-bottom:8px}
+.action-card ul{list-style:none;padding:0}
+.action-card li{font-size:0.8rem;padding:4px 0;color:#cbd5e1;line-height:1.4}
+.action-card li::before{content:'-> ';color:#64748b}
+.projected{background:linear-gradient(135deg,#1e293b,#172033);border:1px solid #334155;border-radius:12px;padding:20px;margin-bottom:24px}
+.projected h3{color:#f8fafc;margin-bottom:12px}
+.projected p{font-size:0.85rem;color:#cbd5e1;line-height:1.6}
+.table-wrap{overflow-x:auto;background:#0f172a;border:1px solid #334155;border-radius:12px;margin-bottom:24px}
+.adset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px}
+.adset-card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:16px}
+.adset-card h4{font-size:0.85rem;color:#e2e8f0;margin-bottom:8px}
+.adset-card .mini-stat{display:flex;justify-content:space-between;font-size:0.78rem;padding:3px 0}
+.footer{text-align:center;color:#475569;font-size:0.7rem;padding:20px 0;border-top:1px solid #1e293b;margin-top:30px}
+@media(max-width:768px){
+  .charts-grid,.campaign-cards,.action-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>AAC Meta Ads — Daily Performance Dashboard</h1>
+    <div class="subtitle">Date Range: 20 Mar – 26 Mar 2026 | Generated: 27 Mar 2026, Auto-Scheduled Run</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-size:0.75rem;color:#94a3b8">Account: AAC (1429904167583115)</div>
+    <div style="font-size:0.75rem;color:#94a3b8">Campaigns: 2 Active</div>
+  </div>
+</div>
+
+<!-- ALERT BAR -->
+<div class="alert-bar">
+  <div class="icon">&#x1F6A8;</div>
+  <div class="text">
+    <strong>CRITICAL: Campaign 12 CPL at Rs.1,398 — 4x above Rs.350 target.</strong><br>
+    Overall 7-day CPL is Rs.952 across both campaigns. "Creatives 1 - Copy" in Kanchipuram adset spent Rs.6,103 for only 5 leads (CPL Rs.1,221). Multiple ads spending Rs.1,500+ with zero leads need immediate pause.
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="label">Total Spend</div>
+    <div class="value">Rs.35,261</div>
+    <div class="sub warn">Rs.5,037/day avg</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Total Leads</div>
+    <div class="value">37</div>
+    <div class="sub warn">5.3/day avg</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Avg CPL</div>
+    <div class="value">Rs.953</div>
+    <div class="sub bad">Target: Rs.350 (2.7x over)</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">CTR</div>
+    <div class="value">0.78%</div>
+    <div class="sub bad">Target: 1.5% (below)</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Avg CPC</div>
+    <div class="value">Rs.21.69</div>
+    <div class="sub bad">Target: Rs.15 (above)</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Total Reach</div>
+    <div class="value">164,084</div>
+    <div class="sub good">Avg Freq: 1.19</div>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="section-title">Trends &amp; Analysis</div>
+<div class="charts-grid">
+  <div class="chart-box">
+    <h3>Daily Spend vs Leads</h3>
+    <canvas id="spendLeadsChart"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3>CPL Trend (Target: Rs.350)</h3>
+    <canvas id="cplChart"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3>CTR Trend (Target: 1.5%)</h3>
+    <canvas id="ctrChart"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3>Spend by Campaign</h3>
+    <canvas id="campPieChart"></canvas>
+  </div>
+</div>
+
+<!-- CAMPAIGN COMPARISON -->
+<div class="section-title">Campaign Comparison</div>
+<div class="campaign-cards">
+  <div class="camp-card">
+    <h3>Campaign 12 - AAC - LG</h3>
+    <div class="stat-row"><span class="stat-label">Total Spend</span><span class="stat-val">Rs.20,974</span></div>
+    <div class="stat-row"><span class="stat-label">Leads</span><span class="stat-val">15</span></div>
+    <div class="stat-row"><span class="stat-label">CPL</span><span class="stat-val" style="color:#f87171">Rs.1,398</span></div>
+    <div class="stat-row"><span class="stat-label">CTR</span><span class="stat-val" style="color:#f87171">0.70%</span></div>
+    <div class="stat-row"><span class="stat-label">CPC</span><span class="stat-val">Rs.21.19</span></div>
+    <div class="stat-row"><span class="stat-label">Impressions</span><span class="stat-val">141,844</span></div>
+    <div class="stat-row"><span class="stat-label">Reach</span><span class="stat-val">109,253</span></div>
+    <div class="stat-row"><span class="stat-label">Yesterday Spend</span><span class="stat-val">Rs.2,896</span></div>
+    <div class="stat-row"><span class="stat-label">Yesterday Leads</span><span class="stat-val">3</span></div>
+  </div>
+  <div class="camp-card">
+    <h3>Andromeda Leads Camp 13/03/26</h3>
+    <div class="stat-row"><span class="stat-label">Total Spend</span><span class="stat-val">Rs.14,287</span></div>
+    <div class="stat-row"><span class="stat-label">Leads</span><span class="stat-val">22</span></div>
+    <div class="stat-row"><span class="stat-label">CPL</span><span class="stat-val" style="color:#fbbf24">Rs.649</span></div>
+    <div class="stat-row"><span class="stat-label">CTR</span><span class="stat-val" style="color:#fbbf24">0.95%</span></div>
+    <div class="stat-row"><span class="stat-label">CPC</span><span class="stat-val">Rs.22.53</span></div>
+    <div class="stat-row"><span class="stat-label">Impressions</span><span class="stat-val">66,647</span></div>
+    <div class="stat-row"><span class="stat-label">Reach</span><span class="stat-val">54,831</span></div>
+    <div class="stat-row"><span class="stat-label">Yesterday Spend</span><span class="stat-val">Rs.1,830</span></div>
+    <div class="stat-row"><span class="stat-label">Yesterday Leads</span><span class="stat-val">2</span></div>
+  </div>
+</div>
+
+<!-- ADSET PERFORMANCE -->
+<div class="section-title">Adset Performance</div>
+<div class="adset-grid">
+  <div class="adset-card">
+    <h4>Chennai (Andromeda)</h4>
+    <div class="mini-stat"><span>Spend</span><span>Rs.14,287</span></div>
+    <div class="mini-stat"><span>Leads</span><span>22</span></div>
+    <div class="mini-stat"><span>CPL</span><span style="color:#fbbf24">Rs.649</span></div>
+    <div class="mini-stat"><span>CTR</span><span>0.95%</span></div>
+  </div>
+  <div class="adset-card">
+    <h4>Audience 3 - Kanchipuram (Camp 12)</h4>
+    <div class="mini-stat"><span>Spend</span><span>Rs.7,040</span></div>
+    <div class="mini-stat"><span>Leads</span><span>6</span></div>
+    <div class="mini-stat"><span>CPL</span><span style="color:#f87171">Rs.1,173</span></div>
+    <div class="mini-stat"><span>CTR</span><span>0.75%</span></div>
+  </div>
+  <div class="adset-card">
+    <h4>Audience 4 - Sriperumbudur (Camp 12)</h4>
+    <div class="mini-stat"><span>Spend</span><span>Rs.3,608</span></div>
+    <div class="mini-stat"><span>Leads</span><span>1</span></div>
+    <div class="mini-stat"><span>CPL</span><span style="color:#f87171">Rs.3,608</span></div>
+    <div class="mini-stat"><span>CTR</span><span>0.95%</span></div>
+  </div>
+  <div class="adset-card">
+    <h4>Audience 1 - Anna Nagar/Boat Club (Camp 12)</h4>
+    <div class="mini-stat"><span>Spend</span><span>Rs.3,517</span></div>
+    <div class="mini-stat"><span>Leads</span><span>3</span></div>
+    <div class="mini-stat"><span>CPL</span><span style="color:#f87171">Rs.1,172</span></div>
+    <div class="mini-stat"><span>CTR</span><span>0.96%</span></div>
+  </div>
+  <div class="adset-card">
+    <h4>Audience 5 - Maha Periyvar (Camp 12)</h4>
+    <div class="mini-stat"><span>Spend</span><span>Rs.3,432</span></div>
+    <div class="mini-stat"><span>Leads</span><span>3</span></div>
+    <div class="mini-stat"><span>CPL</span><span style="color:#f87171">Rs.1,144</span></div>
+    <div class="mini-stat"><span>CTR</span><span>0.92%</span></div>
+  </div>
+  <div class="adset-card">
+    <h4>Audience 2 - IT Professionals (Camp 12)</h4>
+    <div class="mini-stat"><span>Spend</span><span>Rs.3,376</span></div>
+    <div class="mini-stat"><span>Leads</span><span>2</span></div>
+    <div class="mini-stat"><span>CPL</span><span style="color:#f87171">Rs.1,688</span></div>
+    <div class="mini-stat"><span>CTR</span><span>0.58%</span></div>
+  </div>
+</div>
+
+<!-- AD-LEVEL TABLE -->
+<div class="section-title">Ad-Level Performance &amp; Actions</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th>Action</th>
+  <th>Ad Name</th>
+  <th>Adset</th>
+  <th>Campaign</th>
+  <th>Spend</th>
+  <th>Leads</th>
+  <th>CPL</th>
+  <th>CTR</th>
+  <th>CPC</th>
+  <th>Days</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><span class="badge badge-pause">PAUSE</span></td>
+  <td>Creatives 1 - Copy</td>
+  <td>Kanchipuram</td>
+  <td>Camp 12</td>
+  <td>Rs.6,103</td>
+  <td>5</td>
+  <td style="color:#f87171">Rs.1,221</td>
+  <td>0.60%</td>
+  <td>Rs.10.70</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+  <td>Radhika Creatives</td>
+  <td>Chennai</td>
+  <td>Andromeda</td>
+  <td>Rs.5,919</td>
+  <td>8</td>
+  <td style="color:#fbbf24">Rs.740</td>
+  <td>0.77%</td>
+  <td>Rs.42.67</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+  <td>Zenwee MPN Video 1</td>
+  <td>Chennai</td>
+  <td>Andromeda</td>
+  <td>Rs.4,742</td>
+  <td>10</td>
+  <td style="color:#fbbf24">Rs.474</td>
+  <td style="color:#4ade80">1.51%</td>
+  <td>Rs.14.29</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+  <td>Nagarin Idhayam Creative</td>
+  <td>Chennai</td>
+  <td>Andromeda</td>
+  <td>Rs.2,592</td>
+  <td>4</td>
+  <td style="color:#fbbf24">Rs.648</td>
+  <td>0.56%</td>
+  <td>Rs.20.25</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-pause">PAUSE</span></td>
+  <td>Creatives 1 - Copy</td>
+  <td>IT Professionals</td>
+  <td>Camp 12</td>
+  <td>Rs.1,977</td>
+  <td>1</td>
+  <td style="color:#f87171">Rs.1,977</td>
+  <td>0.58%</td>
+  <td>Rs.38.78</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+  <td>Creatives 1 - Copy</td>
+  <td>Anna Nagar/Boat Club</td>
+  <td>Camp 12</td>
+  <td>Rs.1,927</td>
+  <td>3</td>
+  <td style="color:#fbbf24">Rs.642</td>
+  <td>0.90%</td>
+  <td>Rs.26.04</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-pause">PAUSE</span></td>
+  <td>Ad 1 - Zenwee Sitevisit</td>
+  <td>Anna Nagar/Boat Club</td>
+  <td>Camp 12</td>
+  <td>Rs.1,536</td>
+  <td>0</td>
+  <td style="color:#f87171">—</td>
+  <td>1.06%</td>
+  <td>Rs.73.13</td>
+  <td>5</td>
+</tr>
+<tr>
+  <td><span class="badge badge-pause">PAUSE</span></td>
+  <td>Ad 1 - Zenwee Sitevisit</td>
+  <td>Sriperumbudur</td>
+  <td>Camp 12</td>
+  <td>Rs.1,395</td>
+  <td>1</td>
+  <td style="color:#f87171">Rs.1,395</td>
+  <td>1.34%</td>
+  <td>Rs.32.45</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-pause">PAUSE</span></td>
+  <td>Ad 3 - Maha Periyavar</td>
+  <td>Maha Periyvar</td>
+  <td>Camp 12</td>
+  <td>Rs.1,323</td>
+  <td>1</td>
+  <td style="color:#f87171">Rs.1,323</td>
+  <td>0.90%</td>
+  <td>Rs.45.62</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-monitor">MONITOR</span></td>
+  <td>Creatives 1 - Copy</td>
+  <td>Sriperumbudur</td>
+  <td>Camp 12</td>
+  <td>Rs.1,308</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.82%</td>
+  <td>Rs.13.94</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-monitor">MONITOR</span></td>
+  <td>Ad 1 - Zenwee Sitevisit</td>
+  <td>IT Professionals</td>
+  <td>Camp 12</td>
+  <td>Rs.1,244</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.85%</td>
+  <td>Rs.124.35</td>
+  <td>4</td>
+</tr>
+<tr>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+  <td>Ad 4 - Maha Periyavar VO</td>
+  <td>Maha Periyvar</td>
+  <td>Camp 12</td>
+  <td>Rs.1,242</td>
+  <td>2</td>
+  <td style="color:#fbbf24">Rs.621</td>
+  <td>1.18%</td>
+  <td>Rs.49.69</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-monitor">MONITOR</span></td>
+  <td>Ad 1 - Zenwee Kanchipuram</td>
+  <td>Sriperumbudur</td>
+  <td>Camp 12</td>
+  <td>Rs.905</td>
+  <td>0</td>
+  <td>—</td>
+  <td>1.07%</td>
+  <td>Rs.37.72</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-monitor">MONITOR</span></td>
+  <td>MPN Creatives</td>
+  <td>Chennai</td>
+  <td>Andromeda</td>
+  <td>Rs.867</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.70%</td>
+  <td>Rs.54.22</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-monitor">MONITOR</span></td>
+  <td>Creatives 1</td>
+  <td>Maha Periyvar</td>
+  <td>Camp 12</td>
+  <td>Rs.867</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.81%</td>
+  <td>Rs.43.35</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><span class="badge badge-monitor">MONITOR</span></td>
+  <td>Ad 1 - Zenwee Sitevisit</td>
+  <td>Kanchipuram</td>
+  <td>Camp 12</td>
+  <td>Rs.866</td>
+  <td>1</td>
+  <td style="color:#f87171">Rs.866</td>
+  <td>1.06%</td>
+  <td>Rs.20.61</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+  <td>Ad 1 - Zenwee Kanchipuram</td>
+  <td>IT Professionals</td>
+  <td>Camp 12</td>
+  <td>Rs.156</td>
+  <td>1</td>
+  <td style="color:#4ade80">Rs.156</td>
+  <td>0.00%</td>
+  <td>—</td>
+  <td>5</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- VIDEO / CREATIVE PERFORMANCE -->
+<div class="section-title">Creative Performance Breakdown (Andromeda Campaign)</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th>Creative</th>
+  <th>Spend</th>
+  <th>Leads</th>
+  <th>CPL</th>
+  <th>CTR</th>
+  <th>CPC</th>
+  <th>Impressions</th>
+  <th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#0d2818">
+  <td><strong>Zenwee MPN Video 1</strong></td>
+  <td>Rs.4,742</td>
+  <td><strong>10</strong></td>
+  <td style="color:#fbbf24">Rs.474</td>
+  <td style="color:#4ade80"><strong>1.51%</strong></td>
+  <td>Rs.14.29</td>
+  <td>23,177</td>
+  <td><span class="badge badge-scale">BEST PERFORMER</span></td>
+</tr>
+<tr>
+  <td><strong>Radhika Creatives</strong></td>
+  <td>Rs.5,919</td>
+  <td><strong>8</strong></td>
+  <td style="color:#fbbf24">Rs.740</td>
+  <td>0.77%</td>
+  <td>Rs.42.67</td>
+  <td>18,113</td>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+</tr>
+<tr>
+  <td><strong>Nagarin Idhayam Creative</strong></td>
+  <td>Rs.2,592</td>
+  <td>4</td>
+  <td style="color:#fbbf24">Rs.648</td>
+  <td>0.56%</td>
+  <td>Rs.20.25</td>
+  <td>22,690</td>
+  <td><span class="badge badge-optimize">OPTIMIZE</span></td>
+</tr>
+<tr>
+  <td>MPN Creatives</td>
+  <td>Rs.867</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.70%</td>
+  <td>Rs.54.22</td>
+  <td>2,277</td>
+  <td><span class="badge badge-pause">REVIEW</span></td>
+</tr>
+<tr>
+  <td>Zenwee AAC Video 1</td>
+  <td>Rs.85</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.83%</td>
+  <td>—</td>
+  <td>121</td>
+  <td><span class="badge badge-monitor">LOW SPEND</span></td>
+</tr>
+<tr>
+  <td>Zenwee MPN Video 2</td>
+  <td>Rs.40</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.00%</td>
+  <td>—</td>
+  <td>105</td>
+  <td><span class="badge badge-monitor">LOW SPEND</span></td>
+</tr>
+<tr>
+  <td>Missed Meenambakkam</td>
+  <td>Rs.22</td>
+  <td>0</td>
+  <td>—</td>
+  <td>1.55%</td>
+  <td>Rs.6.67</td>
+  <td>129</td>
+  <td><span class="badge badge-monitor">LOW SPEND</span></td>
+</tr>
+<tr>
+  <td>Zenwee AAC Video 2</td>
+  <td>Rs.20</td>
+  <td>0</td>
+  <td>—</td>
+  <td>0.00%</td>
+  <td>—</td>
+  <td>46</td>
+  <td><span class="badge badge-monitor">LOW SPEND</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- ACTION CARDS -->
+<div class="section-title">Today's 4 Action Cards</div>
+<div class="action-grid">
+  <div class="action-card action-stop">
+    <h4>STOP — Pause Immediately</h4>
+    <ul>
+      <li><strong>Creatives 1 - Copy / Kanchipuram</strong>: Rs.6,103 spent, CPL Rs.1,221 — 3.5x target. Highest volume but terrible efficiency</li>
+      <li><strong>Creatives 1 - Copy / IT Professionals</strong>: Rs.1,977 spent, only 1 lead at CPL Rs.1,977</li>
+      <li><strong>Ad 1 - Zenwee Sitevisit / Anna Nagar</strong>: Rs.1,536 spent, ZERO leads</li>
+      <li><strong>Ad 1 - Zenwee Sitevisit / Sriperumbudur</strong>: Rs.1,395 spent, 1 lead at CPL Rs.1,395</li>
+      <li><strong>Ad 3 - Maha Periyavar</strong>: Rs.1,323 spent, 1 lead at CPL Rs.1,323</li>
+    </ul>
+  </div>
+  <div class="action-card action-scale">
+    <h4>SCALE — Increase Budget 20-30%</h4>
+    <ul>
+      <li><strong>Zenwee MPN Video 1</strong>: Best creative with 10 leads, CPL Rs.474, CTR 1.51%. Closest to target — increase daily budget by 25%</li>
+      <li><strong>Creatives 1 - Copy / Anna Nagar</strong>: 3 leads at CPL Rs.642. Got 2 leads on Mar 25 alone at Rs.245 CPL — scale this adset</li>
+    </ul>
+  </div>
+  <div class="action-card action-optimize">
+    <h4>OPTIMIZE — Improve Targeting/Creative</h4>
+    <ul>
+      <li><strong>Radhika Creatives</strong>: 8 leads but CPL Rs.740 and CPC Rs.42.67 is too high. Test new hook in first 3 seconds, narrow audience</li>
+      <li><strong>Nagarin Idhayam</strong>: 4 leads but CTR only 0.56% despite high impressions. Refresh thumbnail and test shorter cut</li>
+      <li><strong>Ad 4 - Maha Periyavar VO</strong>: 2 leads at CPL Rs.621. Test stronger CTA and audience expansion</li>
+    </ul>
+  </div>
+  <div class="action-card action-check">
+    <h4>LEAD QUALITY CHECK</h4>
+    <ul>
+      <li>Call/WhatsApp the 5 leads from yesterday to verify contact quality</li>
+      <li>Check Zenwee MPN Video 1's 4 leads from Mar 24 (CPL Rs.103!) — if quality is high, this is your hero creative</li>
+      <li>Compare Andromeda vs Camp 12 lead-to-site-visit conversion rates</li>
+      <li>MPN Creatives spent Rs.867 with 0 leads across 7 days — evaluate if worth continuing</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PROJECTED IMPACT -->
+<div class="section-title">Projected Impact</div>
+<div class="projected">
+  <h3>If All Actions Taken Today</h3>
+  <p>
+    <strong>Budget freed by pausing underperformers:</strong> ~Rs.1,700/day (from 5 paused ads averaging Rs.11,754 over 7 days).<br><br>
+    <strong>Reallocated to top performers:</strong> Shifting Rs.1,700/day to Zenwee MPN Video 1 (current CPL Rs.474) and Creatives 1 - Copy / Anna Nagar (current CPL Rs.642) could generate an estimated <strong>3-4 additional leads/day</strong> at a blended CPL of ~Rs.500.<br><br>
+    <strong>7-Day Projection:</strong> Current trajectory = ~37 leads/week at Rs.953 CPL. After optimization = ~55-60 leads/week at ~Rs.550-600 CPL. This represents a <strong>40-50% improvement in lead volume</strong> and <strong>35-40% reduction in CPL</strong>.<br><br>
+    <strong>Path to Rs.350 CPL target:</strong> Requires additional creative testing. Current best (Zenwee MPN Video 1) hit Rs.103 CPL on Mar 24 — if replicated consistently, 2-3 similar creatives could bring the blended CPL toward target within 2 weeks.
+  </p>
+</div>
+
+<!-- DAILY SUMMARY -->
+<div class="section-title">Daily Summary — 27 Mar 2026</div>
+<div class="projected">
+  <p>
+    <strong>Yesterday (26 Mar):</strong> Rs.4,726 spent across both campaigns generating 5 leads (CPL Rs.945). Campaign 12 spent Rs.2,896 for 3 leads; Andromeda spent Rs.1,830 for 2 leads.<br><br>
+    <strong>CPL Trend:</strong> Worsening. After a good day on Mar 24 (Rs.676 CPL, 7 leads), CPL climbed back to Rs.1,015 on Mar 25 and Rs.945 on Mar 26. The 7-day blended CPL of Rs.953 is nearly 3x the Rs.350 target.<br><br>
+    <strong>Best Creative:</strong> Zenwee MPN Video 1 — 10 leads, highest CTR (1.51%), and had a standout day on Mar 24 with 4 leads at Rs.103 CPL.<br>
+    <strong>Worst Creative:</strong> MPN Creatives — Rs.867 spent across 7 days with zero leads and only 0.70% CTR.<br><br>
+    <strong>Best Adset:</strong> Chennai (Andromeda) is the only viable adset at Rs.649 CPL with 22 leads. All Campaign 12 adsets are above Rs.1,100 CPL.<br><br>
+    <strong>3 Most Urgent Actions:</strong><br>
+    1. PAUSE 5 underperforming ads (Rs.8,232 spent on ads with CPL >Rs.1,200 or zero leads)<br>
+    2. SCALE Zenwee MPN Video 1 budget by 25% — it's your only creative near target CPL<br>
+    3. Create 2-3 new video creatives modeled on MPN Video 1's style (product tour + strong CTA) to diversify winning approach
+  </p>
+</div>
+
+<div class="footer">
+  AAC Real Estate — Arcadia Aerocity Phase 2 | Auto-generated by Daily Meta Ads Monitor | Data source: Windsor.ai x Facebook Marketing API
+</div>
+
+</div>
+
+<!-- CHARTS SCRIPTS -->
+<script>
+const dates = ['Mar 20','Mar 21','Mar 22','Mar 23','Mar 24','Mar 25','Mar 26'];
+const dailySpend = [4520.35, 4599.78, 6121.29, 5486.20, 4733.51, 5073.63, 4726.34];
+const dailyLeads = [4, 7, 6, 3, 7, 5, 5];
+const dailyCPL = [1130.09, 657.11, 1020.21, 1828.73, 676.22, 1014.73, 945.27];
+const dailyCTR = [0.84, 0.66, 0.86, 0.85, 0.84, 0.75, 0.68];
+
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = '#33415533';
+
+// Spend vs Leads
+new Chart(document.getElementById('spendLeadsChart'), {
+  type: 'bar',
+  data: {
+    labels: dates,
+    datasets: [
+      {
+        label: 'Spend (Rs.)',
+        data: dailySpend,
+        backgroundColor: '#3b82f680',
+        borderColor: '#3b82f6',
+        borderWidth: 1,
+        yAxisID: 'y',
+        borderRadius: 4
+      },
+      {
+        label: 'Leads',
+        data: dailyLeads,
+        type: 'line',
+        borderColor: '#4ade80',
+        backgroundColor: '#4ade8040',
+        pointBackgroundColor: '#4ade80',
+        pointRadius: 5,
+        tension: 0.3,
+        yAxisID: 'y1',
+        fill: true
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      y: { position: 'left', title: { display: true, text: 'Spend (Rs.)' }, grid: { color: '#33415533' } },
+      y1: { position: 'right', title: { display: true, text: 'Leads' }, grid: { display: false }, min: 0, max: 12 }
+    },
+    plugins: { legend: { labels: { usePointStyle: true, padding: 16 } } }
+  }
+});
+
+// CPL Trend
+new Chart(document.getElementById('cplChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      {
+        label: 'CPL (Rs.)',
+        data: dailyCPL,
+        borderColor: '#f87171',
+        backgroundColor: '#f8717120',
+        pointBackgroundColor: '#f87171',
+        pointRadius: 5,
+        tension: 0.3,
+        fill: true
+      },
+      {
+        label: 'Target (Rs.350)',
+        data: [350,350,350,350,350,350,350],
+        borderColor: '#4ade80',
+        borderDash: [8, 4],
+        pointRadius: 0,
+        borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { title: { display: true, text: 'CPL (Rs.)' }, min: 0, max: 2000, grid: { color: '#33415533' } }
+    },
+    plugins: { legend: { labels: { usePointStyle: true, padding: 16 } } }
+  }
+});
+
+// CTR Trend
+new Chart(document.getElementById('ctrChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      {
+        label: 'CTR %',
+        data: dailyCTR,
+        borderColor: '#fbbf24',
+        backgroundColor: '#fbbf2420',
+        pointBackgroundColor: '#fbbf24',
+        pointRadius: 5,
+        tension: 0.3,
+        fill: true
+      },
+      {
+        label: 'Target (1.5%)',
+        data: [1.5,1.5,1.5,1.5,1.5,1.5,1.5],
+        borderColor: '#4ade80',
+        borderDash: [8, 4],
+        pointRadius: 0,
+        borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { title: { display: true, text: 'CTR %' }, min: 0, max: 2, grid: { color: '#33415533' } }
+    },
+    plugins: { legend: { labels: { usePointStyle: true, padding: 16 } } }
+  }
+});
+
+// Campaign Pie
+new Chart(document.getElementById('campPieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Campaign 12 - AAC LG', 'Andromeda Leads Camp'],
+    datasets: [{
+      data: [20974, 14287],
+      backgroundColor: ['#3b82f6', '#8b5cf6'],
+      borderColor: ['#2563eb', '#7c3aed'],
+      borderWidth: 2,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '60%',
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 16 } },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            const val = ctx.parsed;
+            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+            return ' Rs.' + val.toLocaleString() + ' (' + ((val/total)*100).toFixed(1) + '%)';
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
