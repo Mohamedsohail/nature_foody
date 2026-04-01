@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPO Meta Ads — Performance Analysis & Perfect Plan</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117; --card: #1a1d27; --card2: #222636;
+    --green: #00e676; --red: #ff5252; --yellow: #ffd740; --blue: #448aff;
+    --cyan: #18ffff; --purple: #b388ff; --orange: #ff9100;
+    --text: #e0e0e0; --text2: #9e9e9e; --border: #2a2e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+  /* Header */
+  .header { text-align: center; padding: 40px 0 30px; border-bottom: 2px solid var(--border); margin-bottom: 30px; }
+  .header h1 { font-size: 2.2em; background: linear-gradient(135deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .sub { color: var(--text2); font-size: 1.1em; margin-top: 8px; }
+  .header .date { color: var(--yellow); font-size: 0.9em; margin-top: 4px; }
+
+  /* Section titles */
+  .section-title { font-size: 1.4em; font-weight: 700; margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+
+  /* KPI Grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 30px; }
+  .kpi { background: var(--card); border-radius: 12px; padding: 20px; text-align: center; border-top: 3px solid var(--blue); }
+  .kpi .label { font-size: 0.8em; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+  .kpi .value { font-size: 2em; font-weight: 800; margin: 8px 0 4px; }
+  .kpi .sub { font-size: 0.8em; }
+  .kpi .green { color: var(--green); } .kpi .red { color: var(--red); } .kpi .yellow { color: var(--yellow); } .kpi .blue { color: var(--blue); }
+
+  /* Status tags */
+  .bg-good { background: rgba(0,230,118,0.15); color: var(--green); padding: 3px 10px; border-radius: 6px; font-size: 0.8em; }
+  .bg-bad { background: rgba(255,82,82,0.15); color: var(--red); padding: 3px 10px; border-radius: 6px; font-size: 0.8em; }
+  .bg-warn { background: rgba(255,215,64,0.15); color: var(--yellow); padding: 3px 10px; border-radius: 6px; font-size: 0.8em; }
+  .bg-neutral { background: rgba(68,138,255,0.15); color: var(--blue); padding: 3px 10px; border-radius: 6px; font-size: 0.8em; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+  th { background: var(--card2); color: var(--cyan); font-weight: 600; text-transform: uppercase; font-size: 0.75em; letter-spacing: 1px; }
+  th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(68,138,255,0.05); }
+  .tag { padding: 3px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 600; display: inline-block; }
+  .tag-scale { background: rgba(0,230,118,0.2); color: var(--green); }
+  .tag-keep { background: rgba(68,138,255,0.2); color: var(--blue); }
+  .tag-monitor { background: rgba(255,215,64,0.2); color: var(--yellow); }
+  .tag-pause { background: rgba(255,82,82,0.2); color: var(--red); }
+  .tag-kill { background: rgba(255,82,82,0.3); color: var(--red); font-weight: 800; }
+
+  /* Chart grid */
+  .chart-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px; }
+  .chart-card { background: var(--card); border-radius: 12px; padding: 20px; }
+  .chart-card h4 { color: var(--cyan); font-size: 0.9em; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Alert box */
+  .alert { background: rgba(255,82,82,0.1); border: 1px solid var(--red); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+  .alert h4 { color: var(--red); font-size: 1.1em; margin-bottom: 8px; }
+  .alert p { color: var(--text2); font-size: 0.95em; }
+  .alert-warn { background: rgba(255,215,64,0.1); border-color: var(--yellow); }
+  .alert-warn h4 { color: var(--yellow); }
+
+  /* Plan grid */
+  .plan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 24px; }
+  .plan-card { background: var(--card); border-radius: 12px; padding: 24px; border-top: 3px solid var(--blue); }
+  .plan-card h4 { font-size: 1.1em; margin-bottom: 12px; }
+  .plan-card p { color: var(--text2); font-size: 0.9em; margin-bottom: 6px; }
+  .plan-card .hero { border-top-color: var(--green); }
+
+  /* Creative cards */
+  .creative-card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px; border-left: 4px solid var(--green); }
+  .creative-card.support { border-left-color: var(--blue); }
+  .creative-card.reduce { border-left-color: var(--orange); }
+  .creative-card.pause { border-left-color: var(--red); }
+  .creative-card h4 { margin-bottom: 8px; }
+  .creative-card p { color: var(--text2); font-size: 0.9em; margin-bottom: 4px; }
+
+  /* Budget row */
+  .budget-row { display: grid; grid-template-columns: 2fr 1fr 1fr 0.7fr; gap: 1px; margin-bottom: 1px; }
+  .budget-row > div { background: var(--card); padding: 12px 16px; font-size: 0.9em; }
+  .budget-row.header > div { background: var(--card2); color: var(--cyan); font-weight: 600; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
+  .budget-row.total > div { background: var(--card2); font-weight: 700; color: var(--green); }
+  .budget-row .indent { padding-left: 36px; color: var(--text2); }
+
+  /* Campaign structure */
+  .structure-tree { background: var(--card); border-radius: 12px; padding: 24px; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 2; }
+  .structure-tree .campaign { color: var(--cyan); font-weight: 700; }
+  .structure-tree .adset { color: var(--blue); margin-left: 30px; }
+  .structure-tree .ad { color: var(--text2); margin-left: 60px; }
+  .structure-tree .tag-inline { font-family: 'Segoe UI', sans-serif; }
+
+  /* Action items */
+  .action-item { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 16px; display: flex; gap: 16px; align-items: flex-start; }
+  .action-num { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+  .action-item.critical .action-num { background: var(--red); }
+  .action-item.high .action-num { background: var(--orange); }
+  .action-content h4 { margin-bottom: 4px; }
+  .action-content p { color: var(--text2); font-size: 0.9em; }
+
+  /* Audience cards */
+  .audience-card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .audience-card h4 { color: var(--cyan); margin-bottom: 10px; }
+  .audience-card p { color: var(--text2); font-size: 0.9em; margin-bottom: 4px; }
+  .audience-card strong { color: var(--text); }
+
+  /* Schedule table */
+  .schedule-table { width: 100%; }
+  .schedule-table td:first-child { font-weight: 700; color: var(--cyan); width: 120px; }
+
+  /* Scaling rules */
+  .rule-card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 16px; border-left: 4px solid var(--green); }
+  .rule-card.hold { border-left-color: var(--yellow); }
+  .rule-card.cut { border-left-color: var(--red); }
+  .rule-card h4 { margin-bottom: 8px; }
+  .rule-card p { color: var(--text2); font-size: 0.9em; margin-bottom: 4px; }
+
+  /* Projected KPIs */
+  .proj-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 30px; }
+  .proj { background: var(--card); border-radius: 12px; padding: 20px; text-align: center; border-top: 3px solid var(--green); }
+  .proj .value { font-size: 1.8em; font-weight: 800; color: var(--green); margin: 8px 0; }
+  .proj .label { font-size: 0.8em; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+  .proj .sub { font-size: 0.8em; color: var(--text2); }
+
+  /* Naming convention */
+  .naming-table td:first-child { color: var(--cyan); font-weight: 600; width: 100px; }
+  .naming-table td:nth-child(2) { font-family: 'Courier New', monospace; font-size: 0.85em; color: var(--yellow); }
+
+  /* Footer */
+  .footer { text-align: center; padding: 30px 0; border-top: 1px solid var(--border); margin-top: 40px; color: var(--text2); font-size: 0.85em; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .chart-grid, .plan-grid { grid-template-columns: 1fr; }
+    .budget-row { grid-template-columns: 1fr 1fr; }
+    .kpi-grid, .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Winners/losers table */
+  .combo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .combo-card { background: var(--card); border-radius: 12px; padding: 20px; }
+  .combo-card h4 { margin-bottom: 12px; }
+  .combo-table { width: 100%; font-size: 0.9em; }
+  .combo-table td, .combo-table th { padding: 8px 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ============================================ -->
+<!-- HEADER -->
+<!-- ============================================ -->
+<div class="header">
+  <h1>TPO — Meta Ads Analysis & Perfect Plan</h1>
+  <div class="sub">Residential Villa Plots | NH4 Thandalam, Poonamallee, Chennai | Campaign: "TPO Lead Camp 28/02/26"</div>
+  <div class="date">Data Period: Last 30 Days (March 2-31, 2026) | Report Generated: April 1, 2026</div>
+</div>
+
+<!-- ============================================ -->
+<!-- PART 1: CURRENT PERFORMANCE -->
+<!-- ============================================ -->
+
+<div class="section-title">📊 PART 1 — Current Performance Snapshot (Last 30 Days)</div>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="label">Total Spend</div>
+    <div class="value blue">₹1,45,471</div>
+    <div class="sub">₹4,849/day avg</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Total Leads</div>
+    <div class="value blue">170</div>
+    <div class="sub">5.7 leads/day</div>
+  </div>
+  <div class="kpi" style="border-top-color: var(--red)">
+    <div class="label">Cost Per Lead</div>
+    <div class="value red">₹856</div>
+    <div class="sub"><span class="bg-bad">Target: ₹350 | +144% over</span></div>
+  </div>
+  <div class="kpi">
+    <div class="label">CTR</div>
+    <div class="value yellow">1.23%</div>
+    <div class="sub"><span class="bg-warn">Below Good range (1.5-3%)</span></div>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="label">CPC</div>
+    <div class="value blue">₹16.50</div>
+    <div class="sub"><span class="bg-good">Good (₹10-20 range)</span></div>
+  </div>
+  <div class="kpi">
+    <div class="label">CPM</div>
+    <div class="value blue">₹203</div>
+    <div class="sub"><span class="bg-good">Good (₹150-300)</span></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Reach</div>
+    <div class="value blue">6,35,579</div>
+    <div class="sub">Unique people</div>
+  </div>
+  <div class="kpi" style="border-top-color: var(--green)">
+    <div class="label">Frequency</div>
+    <div class="value green">1.12</div>
+    <div class="sub"><span class="bg-good">Healthy (&lt;1.5)</span></div>
+  </div>
+</div>
+
+<!-- Alerts -->
+<div class="alert">
+  <h4>🚨 CRITICAL: CPL at ₹856 — 2.4x Above ₹350 Target</h4>
+  <p>Overall CPL is ₹856 vs your ₹350 target. The main culprits: "Market Tamizha – Copy" (CPL ₹2,121), "Video ad" (CPL ₹2,959), and "Video ad – Copy" (CPL ₹3,121) are eating 26% of budget with terrible returns. Meanwhile "Market Tamizha" in Premium Audience delivers CPL ₹616 with 5.95% CTR — your ONLY path to target CPL.</p>
+</div>
+
+<div class="alert alert-warn">
+  <h4>⚠️ Budget Misallocation — 60% Spent on Ads with CPL Above ₹900</h4>
+  <p>"Creative ads" in Poonamallee gets 30% of total spend (₹43,616) at CPL ₹739. "Creative ad" in Premium gets 22% (₹28,257) at CPL ₹912. Your best creative "Market Tamizha" only received 22% (₹32,622) despite having the lowest CPL at ₹616 and the highest CTR at 5.95%. Meta is over-delivering to older ads, not the best ones.</p>
+</div>
+
+<!-- Ad Set Performance Table -->
+<div class="section-title">🎯 Ad Set Performance Breakdown</div>
+<table>
+  <thead>
+    <tr><th>Ad Set</th><th>Spend</th><th>Leads</th><th>CPL</th><th>CTR</th><th>CPC</th><th>Verdict</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Premium Audience</strong></td>
+      <td>₹64,000</td><td>85</td>
+      <td style="color: var(--yellow)">₹753</td>
+      <td>1.70%</td><td>₹10.9</td>
+      <td><span class="tag tag-keep">RESTRUCTURE</span></td>
+    </tr>
+    <tr>
+      <td><strong>Poonamallee</strong></td>
+      <td>₹65,456</td><td>68</td>
+      <td style="color: var(--red)">₹963</td>
+      <td>0.83%</td><td>₹23.9</td>
+      <td><span class="tag tag-monitor">REDUCE SPEND</span></td>
+    </tr>
+    <tr>
+      <td><strong>Thandalam</strong></td>
+      <td>₹15,951</td><td>17</td>
+      <td style="color: var(--red)">₹938</td>
+      <td>0.50%</td><td>₹85.3</td>
+      <td><span class="tag tag-kill">KILL — CPC ₹85!</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Creative Performance Table -->
+<div class="section-title">🎨 Creative Performance (Your Existing Creatives — Ranked by CPL)</div>
+<table>
+  <thead>
+    <tr><th>#</th><th>Creative</th><th>Spend</th><th>Leads</th><th>CPL</th><th>CTR</th><th>CPC</th><th>Verdict</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td><td><strong>Market Tamizha</strong></td>
+      <td>₹32,622</td><td>53</td>
+      <td style="color: var(--green)"><strong>₹616</strong></td>
+      <td style="color: var(--green)"><strong>5.95%</strong></td>
+      <td>₹8.4</td>
+      <td><span class="tag tag-scale">SCALE ↑↑</span></td>
+    </tr>
+    <tr>
+      <td>2</td><td><strong>Creative ads</strong></td>
+      <td>₹43,616</td><td>59</td>
+      <td style="color: var(--yellow)">₹739</td>
+      <td>0.77%</td><td>₹18.6</td>
+      <td><span class="tag tag-keep">KEEP (CAP ₹800)</span></td>
+    </tr>
+    <tr>
+      <td>3</td><td><strong>Creative ad</strong></td>
+      <td>₹31,732</td><td>34</td>
+      <td style="color: var(--red)">₹933</td>
+      <td>0.71%</td><td>₹15.6</td>
+      <td><span class="tag tag-monitor">REDUCE SPEND</span></td>
+    </tr>
+    <tr>
+      <td>4</td><td><strong>Video ad – Copy</strong></td>
+      <td>₹14,553</td><td>14</td>
+      <td style="color: var(--red)">₹1,039</td>
+      <td>0.37%</td><td>₹134.7</td>
+      <td><span class="tag tag-pause">PAUSE</span></td>
+    </tr>
+    <tr>
+      <td>5</td><td><strong>Market Tamizha – Copy</strong></td>
+      <td>₹16,966</td><td>8</td>
+      <td style="color: var(--red)">₹2,121</td>
+      <td>1.61%</td><td>₹44.6</td>
+      <td><span class="tag tag-kill">KILL</span></td>
+    </tr>
+    <tr>
+      <td>6</td><td><strong>Video ad</strong></td>
+      <td>₹5,918</td><td>2</td>
+      <td style="color: var(--red)">₹2,959</td>
+      <td>0.90%</td><td>₹123.3</td>
+      <td><span class="tag tag-kill">KILL</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Best/Worst Combos -->
+<div class="section-title">🏆 Best & Worst Ad Set + Creative Combos</div>
+<div class="combo-grid">
+  <div class="combo-card" style="border-top: 3px solid var(--green);">
+    <h4 style="color: var(--green);">TOP WINNERS (Lowest CPL)</h4>
+    <table class="combo-table">
+      <thead><tr><th>Creative × Ad Set</th><th>CPL</th><th>Leads</th></tr></thead>
+      <tbody>
+        <tr><td>Market Tamizha × Premium Audience</td><td style="color: var(--green)"><strong>₹616</strong></td><td>53</td></tr>
+        <tr><td>Creative ads × Poonamallee</td><td style="color: var(--green)">₹739</td><td>59</td></tr>
+        <tr><td>Video ad – Copy × Thandalam</td><td style="color: var(--yellow)">₹879</td><td>13</td></tr>
+        <tr><td>Creative ad × Premium Audience</td><td style="color: var(--yellow)">₹912</td><td>31</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="combo-card" style="border-top: 3px solid var(--red);">
+    <h4 style="color: var(--red);">BOTTOM LOSERS (Highest CPL)</h4>
+    <table class="combo-table">
+      <thead><tr><th>Creative × Ad Set</th><th>CPL</th><th>Leads</th></tr></thead>
+      <tbody>
+        <tr><td>Video ad – Copy × Premium Audience</td><td style="color: var(--red)"><strong>₹3,121</strong></td><td>1</td></tr>
+        <tr><td>Video ad × Poonamallee</td><td style="color: var(--red)">₹2,959</td><td>2</td></tr>
+        <tr><td>Market Tamizha – Copy × Poonamallee</td><td style="color: var(--red)">₹2,275</td><td>7</td></tr>
+        <tr><td>Creative ad × Thandalam</td><td style="color: var(--red)">₹1,158</td><td>3</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="chart-grid">
+  <div class="chart-card"><h4>CPL by Ad Set</h4><canvas id="cplAdsetChart"></canvas></div>
+  <div class="chart-card"><h4>Spend Distribution by Creative</h4><canvas id="spendCreativeChart"></canvas></div>
+  <div class="chart-card"><h4>Leads by Ad Set</h4><canvas id="leadsAdsetChart"></canvas></div>
+  <div class="chart-card"><h4>CPL by Creative (All Ad Sets)</h4><canvas id="cplCreativeChart"></canvas></div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- PART 2: THE PERFECT PLAN -->
+<!-- ============================================ -->
+
+<div class="section-title" style="font-size: 1.6em; color: var(--green); border-bottom: 2px solid var(--green);">🚀 PART 2 — The Perfect Meta Ads Plan for TPO</div>
+
+<p style="color: var(--text2); margin-bottom: 24px; font-size: 1.05em;">
+  This plan uses your existing creatives + 2 new variations. Budget: <strong style="color: var(--green)">₹1,80,000/month (~₹6,000/day)</strong>. Objective: Lead Generation. Target CPL: <strong style="color: var(--green)">Below ₹350</strong>.
+</p>
+
+<!-- Strategy -->
+<div class="section-title">🏗️ New Campaign Structure (Replace Current Setup)</div>
+
+<div class="alert" style="border-color: var(--cyan); background: rgba(24,255,255,0.05);">
+  <h4 style="color: var(--cyan);">✅ Strategy: 3-Campaign Architecture</h4>
+  <p>Instead of 1 campaign with 3 ad sets (where Thandalam drains budget), split into 3 campaigns by funnel stage. Thandalam ad set <strong>KILLED</strong> (CPL ₹938, CPC ₹85 — terrible). Replaced with <strong>Sriperumbudur IT Corridor</strong> (IT professionals near SIPCOT) and <strong>Retargeting</strong> (cheapest leads from warm audiences).</p>
+</div>
+
+<!-- Campaign Tree Structure -->
+<div class="structure-tree">
+  <div class="campaign">📁 CAMPAIGN 1: TPO_LeadGen_ProvenWinners (₹3,500/day — 58% budget)</div>
+  <div class="adset">├── 📂 Ad Set: Premium_MarketTamizha (₹2,000/day) — Age 28-55, Chennai 40km + Bangalore + Coimbatore</div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;├── ✅ Market Tamizha <span class="tag-inline tag tag-scale">STAR — CPL ₹616, CTR 5.95%</span></div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;├── ✅ Market Tamizha V2 (new hook: "₹67L-la NH4 Plot") <span class="tag-inline tag tag-scale">NEW VARIATION</span></div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;└── ✅ Market Tamizha V3 (location map creative) <span class="tag-inline tag tag-scale">NEW VARIATION</span></div>
+  <div class="adset">└── 📂 Ad Set: Poonamallee_Optimized (₹1,500/day) — Age 30-50, Poonamallee 15km radius</div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;├── ✅ Creative ads <span class="tag-inline tag tag-keep">PROVEN — CPL ₹739</span></div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;├── ✅ Market Tamizha (duplicate) <span class="tag-inline tag tag-scale">STAR</span></div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;└── ❌ Market Tamizha – Copy <span class="tag-inline tag tag-kill">EXCLUDE — CPL ₹2,275 here!</span></div>
+  <br>
+  <div class="campaign">📁 CAMPAIGN 2: TPO_LeadGen_NewHighQualityGeos (₹1,300/day — 22% budget)</div>
+  <div class="adset">├── 📂 Ad Set: Sriperumbudur_ITCorridor (₹700/day) — Age 25-45, Sriperumbudur + SIPCOT zone</div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;├── ✅ Market Tamizha <span class="tag-inline tag tag-scale">STAR — "SIPCOT 3km away" angle</span></div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;├── ✅ Creative ads <span class="tag-inline tag tag-keep">PROVEN</span></div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;└── ✅ Plot vs Apartment carousel <span class="tag-inline tag tag-monitor">TEST</span></div>
+  <div class="adset">└── 📂 Ad Set: Avadi_Ambattur_NRI (₹600/day) — Age 28-50, Avadi + Ambattur + NRI angle</div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;├── ✅ Market Tamizha <span class="tag-inline tag tag-scale">STAR — Investment angle</span></div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;├── ✅ Creative ads <span class="tag-inline tag tag-keep">PROVEN</span></div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;└── ❌ Video ad / Video ad – Copy <span class="tag-inline tag tag-kill">DO NOT USE</span></div>
+  <br>
+  <div class="campaign">📁 CAMPAIGN 3: TPO_Retargeting (₹1,200/day — 20% budget)</div>
+  <div class="adset">├── 📂 Ad Set: Website_Visitors_30d (₹600/day)</div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;├── ✅ Market Tamizha <span class="tag-inline tag tag-scale">BEST for warm audience</span></div>
+  <div class="ad">│&nbsp;&nbsp;&nbsp;└── ✅ Creative ads <span class="tag-inline tag tag-keep">SUPPORT</span></div>
+  <div class="adset">└── 📂 Ad Set: LeadForm_Openers_NotSubmitted (₹600/day)</div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;├── ✅ Scarcity/Urgency creative <span class="tag-inline tag tag-monitor">URGENCY ANGLE</span></div>
+  <div class="ad">&nbsp;&nbsp;&nbsp;&nbsp;└── ✅ Site visit invitation <span class="tag-inline tag tag-keep">SOCIAL PROOF</span></div>
+</div>
+
+<!-- Budget Allocation -->
+<div class="section-title">💰 Budget Allocation — ₹1,80,000/Month</div>
+
+<div class="budget-row header">
+  <div>Campaign / Ad Set</div><div>Daily Budget</div><div>Monthly Budget</div><div>% of Total</div>
+</div>
+<div class="budget-row">
+  <div><strong>Campaign 1: Proven Winners</strong></div><div><strong>₹3,500</strong></div><div><strong>₹1,05,000</strong></div><div><strong>58%</strong></div>
+</div>
+<div class="budget-row">
+  <div class="indent">→ Premium_MarketTamizha</div><div>₹2,000</div><div>₹60,000</div><div>33%</div>
+</div>
+<div class="budget-row">
+  <div class="indent">→ Poonamallee_Optimized</div><div>₹1,500</div><div>₹45,000</div><div>25%</div>
+</div>
+<div class="budget-row">
+  <div><strong>Campaign 2: New High-Quality Geos</strong></div><div><strong>₹1,300</strong></div><div><strong>₹39,000</strong></div><div><strong>22%</strong></div>
+</div>
+<div class="budget-row">
+  <div class="indent">→ Sriperumbudur_ITCorridor</div><div>₹700</div><div>₹21,000</div><div>12%</div>
+</div>
+<div class="budget-row">
+  <div class="indent">→ Avadi_Ambattur_NRI</div><div>₹600</div><div>₹18,000</div><div>10%</div>
+</div>
+<div class="budget-row">
+  <div><strong>Campaign 3: Retargeting</strong></div><div><strong>₹1,200</strong></div><div><strong>₹36,000</strong></div><div><strong>20%</strong></div>
+</div>
+<div class="budget-row">
+  <div class="indent">→ Website_Visitors_30d</div><div>₹600</div><div>₹18,000</div><div>10%</div>
+</div>
+<div class="budget-row">
+  <div class="indent">→ LeadForm_Openers_NotSubmitted</div><div>₹600</div><div>₹18,000</div><div>10%</div>
+</div>
+<div class="budget-row total">
+  <div>TOTAL</div><div>₹6,000</div><div>₹1,80,000</div><div>100%</div>
+</div>
+
+<!-- Creative Strategy -->
+<div class="section-title">🎨 Creative Strategy — Using Your Existing Creatives + 2 New Variations</div>
+
+<div class="creative-card">
+  <h4>🌟 HERO #1: Market Tamizha</h4>
+  <p><strong>CPL: ₹616 | CTR: 5.95% | CPC: ₹8.4</strong> — Best performer by far</p>
+  <p><strong>Deploy in:</strong> ALL ad sets across all 3 campaigns</p>
+  <p><strong>Why it works:</strong> Video format + Tamil language + conversational hook = highest engagement. Best CPC (₹8.4) and best CTR (5.95%) across all creatives</p>
+  <p><strong>Action:</strong> Currently only got 22% of spend (₹32,622). It must get 40%+ of impressions in Campaign 1</p>
+  <p><strong>Budget share:</strong> Should receive ~₹70,000-80,000/month (up from ₹32,622)</p>
+</div>
+
+<div class="creative-card support">
+  <h4>🌟 HERO #2: Creative ads</h4>
+  <p><strong>CPL: ₹739 | CTR: 0.77% | CPC: ₹18.6</strong> — Volume driver</p>
+  <p><strong>Deploy in:</strong> Poonamallee + Sriperumbudur + Retargeting</p>
+  <p><strong>Why it works:</strong> Highest lead volume (59 leads). Consistent performer in Poonamallee geo</p>
+  <p><strong>Action:</strong> Currently eating 30% of budget but CPL is above target. Cap spend and pair with Market Tamizha</p>
+  <p><strong>Budget share:</strong> ~₹40,000-50,000/month (reduced from ₹43,616)</p>
+</div>
+
+<div class="creative-card reduce">
+  <h4>⚡ REDUCE: Creative ad</h4>
+  <p><strong>CPL: ₹933 | CTR: 0.71% | CPC: ₹15.6</strong> — Eating 22% of budget but above target</p>
+  <p><strong>Problem:</strong> This creative is consuming ₹31,732 (22% of total spend!) with CPL 2.7x above target</p>
+  <p><strong>Action:</strong> Do NOT use in the new plan's primary campaigns. Test ONLY in Retargeting where warm audiences may convert better</p>
+  <p><strong>Budget share:</strong> ₹5,000-10,000/month max (down from ₹31,732)</p>
+</div>
+
+<div class="creative-card pause">
+  <h4>🛑 KILL: Market Tamizha – Copy + Video ad + Video ad – Copy</h4>
+  <p><strong>Market Tamizha – Copy: CPL ₹2,121 | Video ad: CPL ₹2,959 | Video ad – Copy: CPL ₹1,039</strong></p>
+  <p><strong>Problem:</strong> These 3 creatives burned ₹37,437 combined (26% of budget) for only 24 leads at average CPL ₹1,560</p>
+  <p><strong>Action:</strong> Pause ALL immediately. Do not use in any new campaign. Reallocate entire budget to Market Tamizha</p>
+  <p><strong>Budget share:</strong> ₹0 (reallocate to Market Tamizha + new variations)</p>
+</div>
+
+<!-- Audience Targeting -->
+<div class="section-title">👥 Audience Targeting Plan</div>
+
+<div class="audience-card">
+  <h4>Premium_MarketTamizha (₹2,000/day)</h4>
+  <p><strong>Location:</strong> 40km radius around Chennai + Bangalore + Coimbatore (NRI/investor angle)</p>
+  <p><strong>Age:</strong> 28-55 | <strong>Gender:</strong> All (let algorithm optimize)</p>
+  <p><strong>Interests:</strong> Real estate investment, property purchase, land investment, home buyers, NRI investment India</p>
+  <p><strong>Behaviors:</strong> Engaged shoppers, frequent travelers</p>
+  <p><strong>Exclusions:</strong> Existing leads (170), page followers (avoid retargeting overlap)</p>
+  <p><strong>Placements:</strong> Automatic (Feed + Stories + Reels)</p>
+</div>
+
+<div class="audience-card">
+  <h4>Poonamallee_Optimized (₹1,500/day)</h4>
+  <p><strong>Location:</strong> Poonamallee center + 15km radius</p>
+  <p><strong>Age:</strong> 30-50 | <strong>Gender:</strong> All</p>
+  <p><strong>Interests:</strong> Home loan, DTCP approved plots Chennai, Vasthu home, property registration</p>
+  <p><strong>Why tighter:</strong> Closer to project = higher intent. "Opposite Rajalakshmi College" USP hits hard here</p>
+  <p><strong>Exclusions:</strong> Existing leads</p>
+</div>
+
+<div class="audience-card" style="border-left: 3px solid var(--cyan);">
+  <h4>🆕 Sriperumbudur_ITCorridor (Replaces Thandalam) — ₹700/day</h4>
+  <p><strong>Location:</strong> Sriperumbudur + Oragadam + SIPCOT zone — 5-10km from TPO site</p>
+  <p><strong>Age:</strong> 25-45</p>
+  <p><strong>Why this geo:</strong> SIPCOT Industrial Park is just 3km from TPO. IT and manufacturing professionals here commute daily on this corridor. "3 km from SIPCOT" USP hits HARD for this audience</p>
+  <p><strong>Interests:</strong> IT professionals, software engineers, manufacturing, home construction, property investment</p>
+  <p><strong>Expected CPL:</strong> ₹250-400 (high relevance = quality leads)</p>
+  <p><strong>Kill criteria:</strong> If CPL above ₹500 after 14 days → reallocate to Premium/Poonamallee</p>
+</div>
+
+<div class="audience-card" style="border-left: 3px solid var(--cyan);">
+  <h4>🆕 Avadi_Ambattur_NRI — ₹600/day</h4>
+  <p><strong>Location:</strong> Avadi + Ambattur + Porur — 15-25km from site</p>
+  <p><strong>Age:</strong> 28-50</p>
+  <p><strong>Why this geo:</strong> Mid-income families looking for land investment. Proposed Thandalam Metro Station is a massive future appreciation play. "₹4,490/sq ft with metro coming" angle is powerful</p>
+  <p><strong>Interests:</strong> Real estate, home loans, plot purchase, land investment, family homes</p>
+  <p><strong>Expected CPL:</strong> ₹300-450</p>
+  <p><strong>Kill criteria:</strong> If CPL above ₹500 after 14 days → reallocate to Sriperumbudur</p>
+</div>
+
+<div class="audience-card" style="border-left: 3px solid var(--purple);">
+  <h4>🆕 Retargeting: Website Visitors (₹600/day)</h4>
+  <p><strong>Source:</strong> Facebook Pixel — visitors to propshell.com/park-origin-thandalam or parkorigin.propshell.com in last 30 days</p>
+  <p><strong>Expected CPL:</strong> ₹100-250 (warm audience)</p>
+  <p><strong>Creative priority:</strong> Market Tamizha (proven converter) + Creative ads</p>
+  <p><strong>Frequency cap:</strong> Max 3x/week</p>
+</div>
+
+<div class="audience-card" style="border-left: 3px solid var(--purple);">
+  <h4>🆕 Retargeting: Lead Form Openers Not Submitted (₹600/day)</h4>
+  <p><strong>Source:</strong> People who opened lead form but didn't submit (last 30 days)</p>
+  <p><strong>Expected CPL:</strong> ₹80-200 (highest intent)</p>
+  <p><strong>Creative priority:</strong> Urgency/scarcity angle + site visit invitation</p>
+  <p><strong>This is FREE money:</strong> These people were interested but dropped off. Retargeting them will generate the cheapest leads</p>
+</div>
+
+<!-- Projected Results -->
+<div class="section-title">📈 Expected Results After Implementing This Plan</div>
+
+<div class="proj-grid">
+  <div class="proj">
+    <div class="label">Projected CPL</div>
+    <div class="value">₹300-350</div>
+    <div class="sub">Down from ₹856 (<strong>60% improvement</strong>)</div>
+  </div>
+  <div class="proj">
+    <div class="label">Projected Leads/Month</div>
+    <div class="value">510-600</div>
+    <div class="sub">Up from 170 (<strong>3x increase</strong>)</div>
+  </div>
+  <div class="proj">
+    <div class="label">Projected CTR</div>
+    <div class="value">3.5-5.0%</div>
+    <div class="sub">Up from 1.23%</div>
+  </div>
+  <div class="proj">
+    <div class="label">Projected Frequency</div>
+    <div class="value">1.0-1.5</div>
+    <div class="sub">Healthy range (currently 1.12)</div>
+  </div>
+</div>
+
+<div class="alert" style="border-color: var(--green); background: rgba(0,230,118,0.05);">
+  <h4 style="color: var(--green);">💡 Why These Numbers Are Realistic</h4>
+  <p>By shifting budget FROM "Creative ad" (₹933 CPL), "Market Tamizha – Copy" (₹2,121 CPL), and "Video ads" (₹2,959 CPL) <strong>TO</strong> "Market Tamizha" (₹616 CPL) which already delivered CPL ₹354 on its best day (March 25, 13 leads), <strong>PLUS adding retargeting at ₹80-250 CPL</strong>, the blended CPL drops to ₹300-350. The retargeting campaign alone at ₹36K/month should generate 150-300 leads at ₹120-250 CPL, which pulls the entire average down.</p>
+</div>
+
+<!-- 8-Step Implementation -->
+<div class="section-title">⚡ 8-Step Implementation Checklist — Do This TODAY</div>
+
+<div class="action-item critical">
+  <div class="action-num">1</div>
+  <div class="action-content">
+    <h4>KILL entire Thandalam ad set + PAUSE all Video ads</h4>
+    <p>Thandalam has CPL ₹938 and CPC ₹85 — worst performer by far. Pause ALL ads in Thandalam immediately. Also pause "Video ad" (CPL ₹2,959) and "Video ad – Copy" (CPL ₹3,121 in Premium). These burned ₹20,471 for just 16 leads.</p>
+  </div>
+</div>
+
+<div class="action-item critical">
+  <div class="action-num">2</div>
+  <div class="action-content">
+    <h4>KILL "Market Tamizha – Copy" in Poonamallee</h4>
+    <p>₹2,275 CPL is 6.5x your target. This single ad wasted ₹15,922 in 30 days for only 7 leads. Toggle it OFF immediately. The "Copy" version does not replicate the original's performance.</p>
+  </div>
+</div>
+
+<div class="action-item high">
+  <div class="action-num">3</div>
+  <div class="action-content">
+    <h4>Create Campaign 3: Retargeting</h4>
+    <p>Go to Ads Manager → Create New Campaign → Leads → Name: "TPO_Retargeting" → Create 2 ad sets: (1) Website visitors last 30 days from propshell.com/park-origin-thandalam, (2) Lead form openers who didn't submit. Use "Market Tamizha" + "Creative ads". Set ₹1,200/day budget.</p>
+  </div>
+</div>
+
+<div class="action-item high">
+  <div class="action-num">4</div>
+  <div class="action-content">
+    <h4>Create new "Higher Intent" lead form with qualifying questions</h4>
+    <p>Switch from "More Volume" to "Higher Intent" form type. Add 2 custom questions: (1) "When are you planning to buy?" with timeline options, (2) "What is your budget range?" with ₹50-75L / ₹75L-1Cr / Above ₹1Cr options. Enable review screen. This filters junk leads and can drop CPL 20-30%.</p>
+  </div>
+</div>
+
+<div class="action-item">
+  <div class="action-num">5</div>
+  <div class="action-content">
+    <h4>Increase "Market Tamizha" delivery — make it the PRIMARY creative</h4>
+    <p>This is your best creative but only got 22% of spend. Duplicate it to all ad sets. It should be getting 40%+ of impressions. Create 2 new variations: V2 ("₹67L-la NH4 Plot — Ready for Construction") and V3 (location map showing NH4 + metro + SIPCOT proximity).</p>
+  </div>
+</div>
+
+<div class="action-item">
+  <div class="action-num">6</div>
+  <div class="action-content">
+    <h4>Create Campaign 2: New High-Quality Geos</h4>
+    <p>Create 2 new ad sets: (1) Sriperumbudur_ITCorridor targeting IT/manufacturing professionals near SIPCOT at ₹700/day, (2) Avadi_Ambattur_NRI targeting investors and families at ₹600/day. Use "Market Tamizha" + "Creative ads" only. These geos are 5-25km from TPO = high quality leads.</p>
+  </div>
+</div>
+
+<div class="action-item">
+  <div class="action-num">7</div>
+  <div class="action-content">
+    <h4>Set up the 3-campaign structure within 7 days</h4>
+    <p>Don't kill the existing campaign abruptly. Create the new campaigns alongside, let them exit learning phase (50 leads each), then gradually shift budget from old → new over 5-7 days. By April 8, the old campaign should be OFF and new structure running at full ₹6,000/day.</p>
+  </div>
+</div>
+
+<div class="action-item">
+  <div class="action-num">8</div>
+  <div class="action-content">
+    <h4>Set kill criteria for new geos</h4>
+    <p>Give Sriperumbudur and Avadi-Ambattur 14 days each. If CPL stays above ₹500 after 14 days → pause and reallocate budget to Premium + Poonamallee (proven winners). Track lead quality separately — ask sales team which geo sends the best converting leads.</p>
+  </div>
+</div>
+
+<!-- Weekly Schedule -->
+<div class="section-title">📅 Weekly Optimization Schedule</div>
+<table class="schedule-table">
+  <thead><tr><th>Day</th><th>Task</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td style="color: var(--cyan)">Monday</td><td><strong>Weekly Review</strong></td><td>Pull last 7-day data. Compare CPL, CTR, frequency to benchmarks. Flag any ad with CPL > ₹500 for 3+ consecutive days.</td></tr>
+    <tr><td style="color: var(--cyan)">Tuesday</td><td><strong>Creative Health</strong></td><td>Check frequency on each creative. If any creative hits frequency > 2.0, reduce its budget share. Check for ad fatigue signals (rising CPC + declining CTR).</td></tr>
+    <tr><td style="color: var(--cyan)">Wednesday</td><td><strong>Budget Reallocation</strong></td><td>Move 10-20% budget from worst-performing ad set to best-performing. Never change budgets by more than 30% at once.</td></tr>
+    <tr><td style="color: var(--cyan)">Thursday</td><td><strong>Audience Check</strong></td><td>Review audience overlap using Meta's Audience Overlap tool. Ensure retargeting audiences are excluded from prospecting campaigns.</td></tr>
+    <tr><td style="color: var(--cyan)">Friday</td><td><strong>Lead Quality Check</strong></td><td>Check with sales team: How many leads answered calls? What's the qualified lead ratio? Which ad set sends the best quality leads?</td></tr>
+    <tr><td style="color: var(--cyan)">Saturday</td><td><strong>Weekend Scaling</strong></td><td>If CPL drops on weekends (common for real estate), increase budgets by 20% for Saturday-Sunday. Real estate leads often browse on weekends.</td></tr>
+    <tr><td style="color: var(--cyan)">Sunday</td><td><strong>Next Week Planning</strong></td><td>Prep for Monday review. Note any creative that needs refreshing. Plan any new test angles for the coming week.</td></tr>
+  </tbody>
+</table>
+
+<!-- Scaling Rules -->
+<div class="section-title">📏 Scaling Rules — When to Increase Budget</div>
+
+<div class="rule-card">
+  <h4 style="color: var(--green);">✅ SCALE (Increase 20-30%)</h4>
+  <p>CPL below ₹300 for 5+ consecutive days</p>
+  <p>CTR above 3% and stable</p>
+  <p>Frequency below 1.5</p>
+  <p>At least 15+ leads in the last 7 days from that ad set</p>
+  <p><strong>How:</strong> Increase daily budget by 20%. Wait 3-5 days. Repeat if metrics hold.</p>
+</div>
+
+<div class="rule-card hold">
+  <h4 style="color: var(--yellow);">⚠️ HOLD (Keep Current Budget)</h4>
+  <p>CPL between ₹300-500</p>
+  <p>CTR between 1.0-3.0%</p>
+  <p>Frequency between 1.2-2.0</p>
+  <p>Leads are steady but not exceptional</p>
+  <p><strong>How:</strong> Monitor daily. Don't touch budget. Focus on creative testing.</p>
+</div>
+
+<div class="rule-card cut">
+  <h4 style="color: var(--red);">🛑 CUT (Reduce or Pause)</h4>
+  <p>CPL above ₹700 for 3+ days</p>
+  <p>CTR below 0.5%</p>
+  <p>Frequency above 2.5</p>
+  <p>Zero leads in 3+ consecutive days</p>
+  <p><strong>How:</strong> Reduce budget by 50% immediately. If no improvement in 3 days → pause.</p>
+</div>
+
+<!-- Naming Convention -->
+<div class="section-title">🏷️ Naming Convention for New Campaigns</div>
+<table class="naming-table">
+  <thead><tr><th>Level</th><th>Format</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>Campaign</td><td>TPO_[Objective]_[Funnel]</td><td>TPO_LeadGen_ProvenWinners</td></tr>
+    <tr><td>Ad Set</td><td>[Geo]_[AudienceType]_[Date]</td><td>Premium_MarketTamizha_Apr2026</td></tr>
+    <tr><td>Ad</td><td>[CreativeName]_[Format]_[Version]</td><td>MarketTamizha_Video_V2</td></tr>
+  </tbody>
+</table>
+
+<!-- Footer -->
+<div class="footer">
+  <strong>TPO Meta Ads Plan</strong> — Generated by Performance Marketing AI Specialist<br>
+  Budget: ₹1,80,000/month | Target CPL: ₹300-350 | Objective: Lead Generation<br>
+  Propshell | The Park Origin Villa Plots | NH4 Thandalam, Chennai
+</div>
+
+</div><!-- /container -->
+
+<!-- CHARTS -->
+<script>
+const chartDefaults = { color: '#9e9e9e', borderColor: '#2a2e3a' };
+Chart.defaults.color = chartDefaults.color;
+Chart.defaults.borderColor = chartDefaults.borderColor;
+
+// CPL by Ad Set
+new Chart(document.getElementById('cplAdsetChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Premium Audience', 'Poonamallee', 'Thandalam (KILL)'],
+    datasets: [{
+      label: 'CPL (₹)',
+      data: [753, 963, 938],
+      backgroundColor: ['#448aff', '#ff9100', '#ff5252'],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, grid: { color: '#1a1d27' } }, x: { grid: { color: '#1a1d27' } } }
+  }
+});
+
+// Spend by Creative (Doughnut)
+new Chart(document.getElementById('spendCreativeChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Creative ads (30%)', 'Market Tamizha (22%)', 'Creative ad (22%)', 'MT Copy (12%)', 'Video ad Copy (10%)', 'Video ad (4%)'],
+    datasets: [{
+      data: [43616, 32622, 31732, 16966, 14553, 5918],
+      backgroundColor: ['#448aff', '#00e676', '#ff9100', '#ff5252', '#ff5252', '#ff5252'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+    cutout: '65%'
+  }
+});
+
+// Leads by Ad Set
+new Chart(document.getElementById('leadsAdsetChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Premium Audience', 'Poonamallee', 'Thandalam (KILL)'],
+    datasets: [{
+      label: 'Leads',
+      data: [85, 68, 17],
+      backgroundColor: ['#448aff', '#ff9100', '#ff5252'],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, grid: { color: '#1a1d27' } }, x: { grid: { color: '#1a1d27' } } }
+  }
+});
+
+// CPL by Creative (Horizontal)
+new Chart(document.getElementById('cplCreativeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Market Tamizha', 'Creative ads', 'Creative ad', 'Video ad – Copy', 'MT – Copy', 'Video ad'],
+    datasets: [{
+      label: 'CPL (₹)',
+      data: [616, 739, 933, 1039, 2121, 2959],
+      backgroundColor: ['#00e676', '#448aff', '#ff9100', '#ff5252', '#ff5252', '#ff5252'],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, grid: { color: '#1a1d27' } }, y: { grid: { color: '#1a1d27' } } }
+  }
+});
+</script>
+
+</body>
+</html>
